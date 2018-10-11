@@ -58,9 +58,7 @@ public class json extends HttpServlet {
 						strJson = "{\"status\":500,\"msg\":\"jdbc driver not found\"}";
 					}
 
-					try {
-						
-						
+					try {												
 						ConnectionInterface oConnectionPool = ConnectionFactory.getConnection(Hikari); 
 						Connection oConnection = oConnectionPool.newConnection();
 						// servir la petición
