@@ -1,6 +1,8 @@
 package net.daw.control;
 
 import java.io.IOException;
+
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -10,9 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import net.daw.connection.publicinterface.ConnectionInterface;
+import net.daw.connection.specificimplementation.HikariConnectionSpecificImplementation;
+import net.daw.factory.ConnectionFactory;
+import net.daw.helper.EnumHelper;
 
 /**
  * Servlet implementation class json
@@ -52,26 +58,15 @@ public class json extends HttpServlet {
 						strJson = "{\"status\":500,\"msg\":\"jdbc driver not found\"}";
 					}
 
-					HikariConfig config = new HikariConfig();
-					config.setJdbcUrl("jdbc:mysql://localhost:3306/trolleyes");
-					config.setUsername("root");
-					config.setPassword("bitnami");
-
-					config.addDataSourceProperty("cachePrepStmts", "true");
-					config.addDataSourceProperty("prepStmtCacheSize", "250");
-					config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
-					config.setMaximumPoolSize(10);
-					config.setMinimumIdle(5);
-					config.setLeakDetectionThreshold(15000);
-					config.setConnectionTestQuery("SELECT 1");
-					config.setConnectionTimeout(2000);
-
 					try {
-						HikariDataSource oConnectionPool = new HikariDataSource(config);
-						Connection oConnection = (Connection) oConnectionPool.getConnection();
+						
+						
+						ConnectionInterface oConnectionPool = ConnectionFactory.getConnection(Hikari); 
+						Connection oConnection = oConnectionPool.newConnection();
+						// servir la petición
+						oConnectionPool.disposeConnection();
 						strJson = "{\"status\":200,\"msg\":\"Hikari Connection OK\"}";
-					} catch (SQLException ex) {
+					} catch (Exception ex) {
 						strJson = "{\"status\":500,\"msg\":\"Bad Hikari Connection\"}";
 					}
 
