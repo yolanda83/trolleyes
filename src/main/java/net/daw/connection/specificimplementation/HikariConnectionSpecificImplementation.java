@@ -10,6 +10,7 @@ import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
 
 
+
 public class HikariConnectionSpecificImplementation implements ConnectionInterface {
 
 	private Connection oConnection;
