@@ -1,24 +1,16 @@
 package net.daw.control;
 
 import java.io.IOException;
-
-
 import java.sql.Connection;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
 import net.daw.connection.publicinterface.ConnectionInterface;
-import net.daw.connection.specificimplementation.HikariConnectionSpecificImplementation;
+import net.daw.constant.ConnectionConstants;
 import net.daw.factory.ConnectionFactory;
-import net.daw.helper.EnumHelper;
+import net.daw.helper.EncodingHelper;
 
 /**
  * Servlet implementation class json
@@ -58,14 +50,15 @@ public class json extends HttpServlet {
 						strJson = "{\"status\":500,\"msg\":\"jdbc driver not found\"}";
 					}
 
-					try {												
-						ConnectionInterface oConnectionPool = ConnectionFactory.getConnection(Hikari); 
+					try {
+						ConnectionInterface oConnectionPool = ConnectionFactory
+								.getConnection(ConnectionConstants.connectionPool);
 						Connection oConnection = oConnectionPool.newConnection();
-						// servir la petición
+						// servir la petición utilizando oConnection
 						oConnectionPool.disposeConnection();
 						strJson = "{\"status\":200,\"msg\":\"Hikari Connection OK\"}";
 					} catch (Exception ex) {
-						strJson = "{\"status\":500,\"msg\":\"Bad Hikari Connection\"}";
+						strJson = "{\"status\":500,\"msg\":\"Bad Connection: " + EncodingHelper.escapeQuotes(ex.getMessage()) + "\"}";
 					}
 
 				}

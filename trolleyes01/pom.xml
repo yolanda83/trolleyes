@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.daw</groupId>
-	<artifactId>trolleyes01</artifactId>
+	<artifactId>trolleyes</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>trolleyes01</name>
@@ -33,6 +33,6 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>trolleyes01</finalName>
+		<finalName>trolleyes</finalName>
 	</build>
 </project>

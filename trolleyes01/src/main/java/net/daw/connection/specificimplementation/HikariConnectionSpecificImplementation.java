@@ -7,7 +7,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import net.daw.connection.publicinterface.ConnectionInterface;
-import net.daw.helper.ConnectionHelper;
+import net.daw.constant.ConnectionConstants;
+
 
 public class HikariConnectionSpecificImplementation implements ConnectionInterface {
 
@@ -17,16 +18,15 @@ public class HikariConnectionSpecificImplementation implements ConnectionInterfa
 	public Connection newConnection() throws Exception {
 
 		HikariConfig config = new HikariConfig();
-		config.setJdbcUrl(ConnectionHelper.getConnectionChain());
-		config.setUsername(ConnectionHelper.getDatabaseLogin());
-		config.setPassword(ConnectionHelper.getDatabasePassword());
-
+		config.setJdbcUrl(ConnectionConstants.getConnectionChain());
+		config.setUsername(ConnectionConstants.databaseLogin);
+		config.setPassword(ConnectionConstants.databasePassword);
+		config.setMaximumPoolSize(ConnectionConstants.getDatabaseMaxPoolSize);
+		config.setMinimumIdle(ConnectionConstants.getDatabaseMinPoolSize);
+		
 		config.addDataSourceProperty("cachePrepStmts", "true");
 		config.addDataSourceProperty("prepStmtCacheSize", "250");
 		config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-
-		config.setMaximumPoolSize(ConnectionHelper.getDatabaseMaxPoolSize());
-		config.setMinimumIdle(ConnectionHelper.getDatabaseMinPoolSize());
 		config.setLeakDetectionThreshold(15000);
 		config.setConnectionTestQuery("SELECT 1");
 		config.setConnectionTimeout(2000);
