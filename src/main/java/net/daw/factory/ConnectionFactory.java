@@ -1,6 +1,7 @@
 package net.daw.factory;
 
 import net.daw.connection.publicinterface.ConnectionInterface;
+import net.daw.connection.specificimplementation.DBCPConnectionSpecificImplementation;
 import net.daw.connection.specificimplementation.HikariConnectionSpecificImplementation;
 import net.daw.constant.ConnectionConstants;
 
@@ -10,6 +11,9 @@ public class ConnectionFactory {
 		switch (enumConnection) {
 		case Hikari:
 			oConnectionInterface = new HikariConnectionSpecificImplementation();
+			break;
+                case DBCP:
+                        oConnectionInterface = new DBCPConnectionSpecificImplementation();
 			break;
 		default:
 			oConnectionInterface = new HikariConnectionSpecificImplementation();
