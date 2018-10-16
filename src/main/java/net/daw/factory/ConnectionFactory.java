@@ -5,6 +5,7 @@ import net.daw.connection.specificimplementation.DBCPConnectionSpecificImplement
 import net.daw.connection.specificimplementation.BoneCPConnectionSpecificImplementation;
 import net.daw.connection.specificimplementation.C3P0ConnectionSpecificImplementation;
 import net.daw.connection.specificimplementation.HikariConnectionSpecificImplementation;
+import net.daw.connection.specificimplementation.ViburConnectionSpecificImplementation;
 import net.daw.constant.ConnectionConstants;
 
 public class ConnectionFactory {
@@ -23,6 +24,9 @@ public class ConnectionFactory {
 		case C3P0:
 			oConnectionInterface = new C3P0ConnectionSpecificImplementation();
 			break;
+        case Vibur:
+            oConnectionInterface = new ViburConnectionSpecificImplementation();
+            break;
 		default:
 			oConnectionInterface = new HikariConnectionSpecificImplementation();
 			break;
