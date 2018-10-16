@@ -4,6 +4,7 @@ import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.connection.specificimplementation.DBCPConnectionSpecificImplementation;
 import net.daw.connection.specificimplementation.BoneCPConnectionSpecificImplementation;
 import net.daw.connection.specificimplementation.HikariConnectionSpecificImplementation;
+import net.daw.connection.specificimplementation.ViburConnectionSpecificImplementation;
 import net.daw.constant.ConnectionConstants;
 
 public class ConnectionFactory {
@@ -19,11 +20,13 @@ public class ConnectionFactory {
 		case BoneCP:
 			oConnectionInterface = new BoneCPConnectionSpecificImplementation();
 			break;
+                case Vibur:
+                        oConnectionInterface = new ViburConnectionSpecificImplementation();
+                    break;
 		default:
 			oConnectionInterface = new HikariConnectionSpecificImplementation();
 			break;
 		}
 		return oConnectionInterface;
-
-	}
+        }
 }
