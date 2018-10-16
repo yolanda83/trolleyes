@@ -10,7 +10,7 @@ public class ConnectionConstants {
 
     public static final EnumConstans connectionPool = EnumConstans.Vibur;
     public static final String databaseName = "trolleyes";
-    public static final String databaseLogin = "root";
+    public static final String databaseLogin = "root2";
     public static final String databasePassword = "bitnami";
     public static final String databasePort = "3306";
     public static final String databaseHost = "localhost";
