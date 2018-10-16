@@ -56,7 +56,7 @@ public class json extends HttpServlet {
 						Connection oConnection = oConnectionPool.newConnection();
 						// servir la petición utilizando oConnection
 						oConnectionPool.disposeConnection();
-						strJson = "{\"status\":200,\"msg\":\"Hikari Connection OK\"}";
+						strJson = "{\"status\":200,\"msg\":\"Vibur Connection OK\"}";
 					} catch (Exception ex) {
 						strJson = "{\"status\":500,\"msg\":\"Bad Connection: " + EncodingHelper.escapeQuotes(ex.getMessage()) + "\"}";
 					}

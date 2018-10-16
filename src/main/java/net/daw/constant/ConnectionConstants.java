@@ -6,10 +6,11 @@ public class ConnectionConstants {
 
 	public static enum EnumConstans  {
 		Hikari,
-		DBCP
+		DBCP,
+                Vibur
 	};
 
-	public static final EnumConstans connectionPool = EnumConstans.Hikari;
+	public static final EnumConstans connectionPool = EnumConstans.Vibur;
 	public static final String databaseName = "trolleyes";
 	public static final String databaseLogin = "root";
 	public static final String databasePassword = "bitnami";
