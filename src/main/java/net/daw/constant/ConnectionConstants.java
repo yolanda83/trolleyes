@@ -6,7 +6,10 @@ public class ConnectionConstants {
 
 	public static enum EnumConstans  {
 		Hikari,
-		DBCP
+		DBCP,
+		BoneCP,
+		C3P0,
+		Vibur
 	};
 
 	public static final EnumConstans connectionPool = EnumConstans.Hikari;

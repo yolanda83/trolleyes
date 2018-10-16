@@ -1,3 +1,4 @@
+
 package net.daw.control;
 
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class json extends HttpServlet {
 						oConnectionPool.disposeConnection();
 						strJson = "{\"status\":200,\"msg\":\"Hikari Connection OK\"}";
 					} catch (Exception ex) {
-						strJson = "{\"status\":500,\"msg\":\"Bad Connection: " + EncodingHelper.escapeQuotes(ex.getMessage()) + "\"}";
+						strJson = "{\"status\":500,\"msg\":\"Bad Connection: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())) + "\"}";
 					}
 
 				}
