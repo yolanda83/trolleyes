@@ -2,11 +2,12 @@ package net.daw.constant;
 
 public class ConnectionConstants {
 
-    public static enum EnumConstans {
-        Hikari,
-        DBCP,
-        Vibur
-    };
+	public static enum EnumConstans  {
+		Hikari,
+		DBCP,
+		BoneCP,
+                Vibur
+	};
 
     public static final EnumConstans connectionPool = EnumConstans.Hikari;
     public static final String databaseName = "trolleyes";
