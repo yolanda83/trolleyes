@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Ejercicio CS</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+<style>
+div {
+	margin-top: 20px;
+}
+
+label {
+	font-weight: bold;
+}
+
+#alerta {
+	text-align: center;
+}
+
+.container{
+	visibility: hidden;
+}
+
+
+</style>
+</head>
+<body>
+	<div class="container">
+		<center>
+			<h1>Formulario de logeo</h1>
+		</center>
+		<form>
+			<div class="form-group">
+				<label for="user" id="luser">Usuario</label> <input type="text"
+					class="form-control" id="user" placeholder="Introduce usuario">
+				<div id="msgUser"></div>
+			</div>
+			<div class="form-group">
+				<label for="pass" id="lpass">Contraseña</label> <input type="password"
+					class="form-control" id="pass" placeholder="Introduce Contraseña">
+				<div id="msgPass"></div>
+			</div>
+		</form>
+		<button type="button" name="login" value="Login" id="login" class="btn btn-success" disabled>Login</button>
+		<button type="button" name="logout" value="logout" id="logout" class="btn btn-warning" >Logout</button>
+		<button type="button" name="connect" value="connect" id="connect" class="btn btn-info">Connect</button>
+		<button type="button" name="getsecret" value="getsecret" id="getsecret" class="btn btn-success">Secret</button>
+		<button type="button" name="check" value="check" id="check" class="btn btn-success">Check</button>
+		<button type="reset" name="limpiar" value="Limpiar" id="limpiar" class="btn btn-danger">Limpiar</button>
+		<div id="alerta"></div>
+		<div id="msgConexion"></div>
+	</div>
+	
+	<script>
+            $(document).ready(function () {
+            	peticion("refresh");
+            	
+                function nombre(str) {
+                    return /^[a-zA-Z1-9]*$/.test(str);
+                }
+
+                $("#user").keyup(function () {
+                user = $("#user").val();
+                if ((nombre($("#user").val()))) {
+                    if (!($("#user").val() == "")) {
+                        $("#msgUser").attr("class", "alert alert-success");
+                        $("#user").css("border-color", "green");
+                        $("#msgUser").empty().append("Correcto");
+                        if ((nombre($("#pass").val())) && (!($("#pass").val() == ""))) {
+                            $("#login").attr("disabled", false);
+                        }
+
+                    } else {
+                        $("#msgUser").attr("class", "alert alert-danger");
+                        $("#msgUser").empty().append("Debes escribir un nombre de usuario");
+                        $("#user").css("border-color", "red");
+                        $("#login").attr("disabled", true);
+                    }
+
+                } else {
+                    $("#msgUser").attr("class", "alert alert-danger");
+                    $("#msgUser").empty().append("No puedes dejar espacios en blanco");
+                    $("#user").css("border-color", "red");
+                    $("#login").attr("disabled", true);
+                }
+            });
+            $("#pass").keyup(function () {
+                pass = $("#pass").val();
+                if ((nombre($("#pass").val()))) {
+	                if (!pass == "") {
+	                    $("#msgPass").attr("class", "alert alert-success");
+	                    $("#pass").css("border-color", "green");
+	                    $("#msgPass").empty().append("Correcto");
+	                    if ((nombre($("#user").val())) && (!($("#user").val() == ""))) {
+	                        $("#login").attr("disabled", false);
+	                    }
+	
+	                } else {
+	                    $("#msgPass").attr("class", "alert alert-danger");
+	                    $("#msgPass").empty().append("La contraseña no debe estar vacía.");
+	                    $("#pass").css("border-color", "red");
+	                    $("#login").attr("disabled", true);
+	                }
+	            } else {
+	                $("#msgPass").attr("class", "alert alert-danger");
+	                $("#msgPass").empty().append("La contraseña no puede tener espacios en blanco");
+	                $("#pass").css("border-color", "red");
+	                $("#login").attr("disabled", true);
+	            }
+            });
+
+	            $("#limpiar").click(function () {
+	                limpiar();
+	            });
+                $("#login").click(function () {
+                    peticion("login");
+                });
+                $("#connect").click(function () {
+                	limpiar();
+                    peticion("connect");
+                });
+                $("#logout").click(function () {
+                    peticion("logout");
+                    limpiar();
+                });
+                $("#check").click(function () {
+                    peticion("check");
+                });
+                $("#getsecret").click(function () {
+                    peticion("getsecret");
+                });
+
+                function esconder(){
+                	$("#msgUser").hide();
+            		$("#user").hide();
+            		$("#luser").hide();
+            		$("#msgPass").hide();
+            		$("#pass").hide();
+            		$("#lpass").hide();
+            		$("#login").hide();
+            		$("#getsecret").show();
+            		$("#logout").show();
+            		$("#connect").show();
+            		$(".container").css("visibility","visible");
+                }
+                
+                function mostrar(){
+                	$("#msgUser").show();
+            		$("#user").show();
+            		$("#luser").show();
+            		$("#msgPass").show();
+            		$("#pass").show();
+            		$("#lpass").show();
+            		$("#login").show();
+            		$("#getsecret").hide();
+            		$("#logout").hide();
+            		$("#connect").hide();
+            		$(".container").css("visibility","visible");
+                }
+                
+                function peticion(op){
+                	var ob = "usuario";
+                	$("#alerta").attr("class", "");
+                	if(op === "login"){
+                    var user = $("#user").val();
+                    var pass = $("#pass").val();
+                    var url = "/trolleyes/json?ob="+ob+"&user=" + user + "&pass=" + pass + "&op=" + op;
+                	}else{
+                		if(op === "refresh"){
+                			var url = "/trolleyes/json?ob="+ob+"&op=check";
+                		}else{
+                			var url = "/trolleyes/json?ob="+ob+"&op=" + op;
+                		}
+                	}
+                    $.ajax({
+                        url: url,
+                        cache: false,
+                        method: "GET",
+                        dataType: "json",
+                        success: function (data) {
+                        	if(op === "login"){
+                        		esconder();
+                        	}
+                        	if(op === "logout"){
+                        		mostrar();
+                        	}
+                        	if(op==="check" || op === "refresh"){
+                        		esconder();
+                        	}
+                            $("#alerta").attr("class", "alert alert-success");
+                            $("#alerta").empty().append("<h3>"+data.status+": "+data.msg+"</h3>");
+                        },
+                        error: function (error) {
+                        	if(op==="check" || op === "refresh"){
+                        		mostrar();
+                        	}
+                        	if(op !== "refresh"){
+                            	$("#alerta").attr("class", "alert alert-danger");
+                            	$("#alerta").empty().append("<h3> status "+error.status+": "+error.responseJSON.msg+"</h3>");
+                        	}
+                        }
+
+                    });                	
+                }
+                
+                function limpiar(){
+                	$("#alerta").attr("class", "");
+                    $("#alerta").empty();
+                    $("#user").val('');
+                    $("#pass").val('');
+                    $("#msgUser").attr("class", "");
+                    $("#msgPass").attr("class", "");
+                    $("#msgUser").empty();
+                    $("#msgPass").empty();
+                    $("#user").css("border-color", "");
+                    $("#pass").css("border-color", "");
+                    $("#login").attr("disabled", true);
+                }
+                
+            });
+        </script> 
+	
+	
+	
+</body>
+</html>
