@@ -72,8 +72,10 @@ public class json extends HttpServlet {
 							Connection oConnection = oConnectionPool.newConnection();
 							// servir la petición utilizando oConnection
 							oConnectionPool.disposeConnection();
+							response.setStatus(200);
 							strJson = "{\"status\":200,\"msg\":\"Hikari Connection OK\"}";
 						} catch (Exception ex) {
+							response.setStatus(500);
 							strJson = "{\"status\":500,\"msg\":\"Bad Connection: "
 									+ EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())) + "\"}";
 						}
@@ -91,38 +93,47 @@ public class json extends HttpServlet {
 						String strPass = request.getParameter("pass");
 						if (strUser.equals("rafa") && strPass.equals("thebest")) {
 							oSession.setAttribute("daw", strUser);
+							response.setStatus(200);
 							strJson = "{\"status\":200,\"msg\":\"" + strUser + "\"}";
 						} else {
+							response.setStatus(401);
 							strJson = "{\"status\":401,\"msg\":\"Authentication error\"}";
 						}
 					}
 					if (strOp.equalsIgnoreCase("logout")) {
 						oSession.invalidate();
+						response.setStatus(200);
 						strJson = "{\"status\":200,\"msg\":\"Session is closed\"}";
 					}
 					if (strOp.equalsIgnoreCase("check")) {
 						String strUserName = (String) oSession.getAttribute("daw");
 						if (strUserName != null) {
+							response.setStatus(200);
 							strJson = "{\"status\":200,\"msg\":\"" + strUserName + "\"}";
 						} else {
+							response.setStatus(401);
 							strJson = "{\"status\":401,\"msg\":\"Authentication error\"}";
 						}
 					}
 					if (strOp.equalsIgnoreCase("getsecret")) {
 						String strUserName = (String) oSession.getAttribute("daw");
 						if (strUserName != null) {
+							response.setStatus(200);
 							strJson = "{\"status\":200,\"msg\":\"985739847598\"}";
 						} else {
+							response.setStatus(401);
 							strJson = "{\"status\":401,\"msg\":\"Authentication error\"}";
 						}
 					}
 				}
 
 			} else {
-				strJson = "{\"status\":200,\"msg\":\"operation empty\"}";
+				response.setStatus(500);
+				strJson = "{\"status\":500,\"msg\":\"operation or object empty\"}";
 			}
 		} else {
-			strJson = "{\"status\":200,\"msg\":\"operation can't be null\"}";
+			response.setStatus(500);
+			strJson = "{\"status\":500,\"msg\":\"operation or object can't be null\"}";
 		}
 		response.getWriter().append(strJson).close();
 	}
