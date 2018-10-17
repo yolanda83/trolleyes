@@ -23,6 +23,12 @@ label {
 #alerta {
 	text-align: center;
 }
+
+.container{
+	visibility: hidden;
+}
+
+
 </style>
 </head>
 <body>
@@ -141,6 +147,7 @@ label {
             		$("#getsecret").show();
             		$("#logout").show();
             		$("#connect").show();
+            		$(".container").css("visibility","visible");
                 }
                 
                 function mostrar(){
@@ -154,6 +161,7 @@ label {
             		$("#getsecret").hide();
             		$("#logout").hide();
             		$("#connect").hide();
+            		$(".container").css("visibility","visible");
                 }
                 
                 function peticion(op){
@@ -204,7 +212,6 @@ label {
                 function limpiar(){
                 	$("#alerta").attr("class", "");
                     $("#alerta").empty();
-                    $("#tabla").empty();
                     $("#user").val('');
                     $("#pass").val('');
                     $("#msgUser").attr("class", "");
