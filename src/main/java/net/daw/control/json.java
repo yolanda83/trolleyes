@@ -37,19 +37,28 @@ public class json extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		
 		String strJson = "";
 		String strOb = request.getParameter("ob");
 		String strOp = request.getParameter("op");
 
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		} catch (Exception ex) {
+			strJson = "{\"status\":500,\"msg\":\"jdbc driver not found\"}";
+		}		
+		
 		if (strOp != null && strOb != null) {
 			if (!strOp.equalsIgnoreCase("") && !strOb.equalsIgnoreCase("")) {
 				if (strOb.equalsIgnoreCase("tipousuario")) {
 					if (strOp.equalsIgnoreCase("get")) {
-						
+
 						TipousuarioService oService = new TipousuarioService(request);
 						try {
 							ReplyBean oReplyBean = oService.get();
+							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":\"" + oReplyBean.getJson()
+									+ "\"}";
+							
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -58,22 +67,17 @@ public class json extends HttpServlet {
 				}
 				if (strOb.equalsIgnoreCase("usuario")) {
 					if (strOp.equalsIgnoreCase("connect")) {
-						// conexion a la base de datos
-						try {
-							Class.forName("com.mysql.jdbc.Driver");
-
-						} catch (Exception ex) {
-							strJson = "{\"status\":500,\"msg\":\"jdbc driver not found\"}";
-						}
-
+						
 						try {
 							ConnectionInterface oConnectionPool = ConnectionFactory
 									.getConnection(ConnectionConstants.connectionPool);
 							Connection oConnection = oConnectionPool.newConnection();
 							// servir la petición utilizando oConnection
 							oConnectionPool.disposeConnection();
+
 							response.setStatus(200);
-							strJson = "{\"status\":200,\"msg\":\"Hikari Connection OK\"}";
+							strJson = "{\"status\":200,\"msg\":\"Connection OK\"}";
+
 						} catch (Exception ex) {
 							response.setStatus(500);
 							strJson = "{\"status\":500,\"msg\":\"Bad Connection: "
@@ -135,6 +139,7 @@ public class json extends HttpServlet {
 			response.setStatus(500);
 			strJson = "{\"status\":500,\"msg\":\"operation or object can't be null\"}";
 		}
+		
 		response.getWriter().append(strJson).close();
 	}
 
