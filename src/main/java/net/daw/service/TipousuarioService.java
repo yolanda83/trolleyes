@@ -4,9 +4,13 @@ import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.Gson;
+
 import net.daw.bean.ReplyBean;
+import net.daw.bean.TipousuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
+import net.daw.dao.TipousuarioDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
 
@@ -26,21 +30,16 @@ public class TipousuarioService {
 		ConnectionInterface oConnectionPool = null;
 		Connection oConnection ;
 		try {
-			
 			Integer id = Integer.parseInt(oRequest.getParameter("id"));
-			
-			
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
-
-			// servir la petición utilizando capa dao con el id  y oConnection
-
-			oReplyBean = new ReplyBean(200, "OK");
-
-			oConnectionPool.disposeConnection();
-
+			TipousuarioDao oTipousuarioDao=new TipousuarioDao(oConnection);
+			TipousuarioBean oTipousuarioBean = oTipousuarioDao.get(id);
+			Gson oGson = new Gson();
+			oReplyBean = new ReplyBean(200, oGson.toJson(oTipousuarioBean));
 		} catch (Exception ex) {
 			oReplyBean = new ReplyBean(500, "Bad Connection: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+		} finally {
 			oConnectionPool.disposeConnection();
 		}
 
