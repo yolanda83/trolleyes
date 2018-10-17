@@ -37,7 +37,7 @@ public class json extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+
 		String strJson = "";
 		String strOb = request.getParameter("ob");
 		String strOp = request.getParameter("op");
@@ -46,8 +46,8 @@ public class json extends HttpServlet {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception ex) {
 			strJson = "{\"status\":500,\"msg\":\"jdbc driver not found\"}";
-		}		
-		
+		}
+
 		if (strOp != null && strOb != null) {
 			if (!strOp.equalsIgnoreCase("") && !strOb.equalsIgnoreCase("")) {
 				if (strOb.equalsIgnoreCase("tipousuario")) {
@@ -58,7 +58,20 @@ public class json extends HttpServlet {
 							ReplyBean oReplyBean = oService.get();
 							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":\"" + oReplyBean.getJson()
 									+ "\"}";
-							
+
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					if (strOp.equalsIgnoreCase("remove")) {
+
+						TipousuarioService oService = new TipousuarioService(request);
+						try {
+							ReplyBean oReplyBean = oService.remove();
+							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":\"" + oReplyBean.getJson()
+									+ "\"}";
+
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -67,7 +80,7 @@ public class json extends HttpServlet {
 				}
 				if (strOb.equalsIgnoreCase("usuario")) {
 					if (strOp.equalsIgnoreCase("connect")) {
-						
+
 						try {
 							ConnectionInterface oConnectionPool = ConnectionFactory
 									.getConnection(ConnectionConstants.connectionPool);
@@ -139,7 +152,7 @@ public class json extends HttpServlet {
 			response.setStatus(500);
 			strJson = "{\"status\":500,\"msg\":\"operation or object can't be null\"}";
 		}
-		
+
 		response.getWriter().append(strJson).close();
 	}
 

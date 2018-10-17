@@ -12,7 +12,7 @@ import net.daw.bean.TipousuarioBean;
 public class TipousuarioDao {
 
 	Connection oConnection;
-	String ob = "tipoUsuario";
+	String ob = "tipousuario";
 
 	public TipousuarioDao(Connection oConnection) {
 		super();
@@ -49,5 +49,35 @@ public class TipousuarioDao {
 		return oTipousuarioBean;
 
 	}
+	
+	
+	
+	public boolean remove(int id) throws Exception {
+		boolean respuesta;
+		String strSQL = "DELETE FROM " + ob + " WHERE id=?";
+		TipousuarioBean oTipousuarioBean;
+		ResultSet oResultSet = null;
+		PreparedStatement oPreparedStatement =null;
+		try {
+			oPreparedStatement = oConnection.prepareStatement(strSQL);
+			oPreparedStatement.setInt(1, id);
+			respuesta = oPreparedStatement.execute();
+			
+		} catch (SQLException e) {
+			throw new Exception ("Error en Dao remove de tipousuario",e);
+		} finally {
+			if (oResultSet!=null) {
+				oResultSet.close();
+			}
+			if (oPreparedStatement!=null) {
+				oPreparedStatement.close();
+			}
+		}
+
+		return respuesta;
+
+	}
+	
+	
 
 }
