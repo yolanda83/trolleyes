@@ -52,17 +52,16 @@ public class TipousuarioDao {
 	
 	
 	
-	public boolean remove(int id) throws Exception {
-		boolean respuesta;
+	public String remove(int id) throws Exception {
+		String strRes;
 		String strSQL = "DELETE FROM " + ob + " WHERE id=?";
-		TipousuarioBean oTipousuarioBean;
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement =null;
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
 			oPreparedStatement.setInt(1, id);
-			respuesta = oPreparedStatement.execute();
-			
+			oPreparedStatement.execute();
+			strRes = "Registro "+ id + " eliminado.";
 		} catch (SQLException e) {
 			throw new Exception ("Error en Dao remove de tipousuario",e);
 		} finally {
@@ -74,7 +73,7 @@ public class TipousuarioDao {
 			}
 		}
 
-		return respuesta;
+		return strRes;
 
 	}
 	

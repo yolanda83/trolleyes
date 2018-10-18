@@ -56,6 +56,7 @@ public class json extends HttpServlet {
 						TipousuarioService oService = new TipousuarioService(request);
 						try {
 							ReplyBean oReplyBean = oService.get();
+<<<<<<< HEAD
 							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":\"" + oReplyBean.getJson()
 									+ "\"}";
 
@@ -72,6 +73,11 @@ public class json extends HttpServlet {
 							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":\"" + oReplyBean.getJson()
 									+ "\"}";
 
+=======
+							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
+									+ "}";
+							
+>>>>>>> branch 'master' of https://github.com/rafaelaznar/trolleyes
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

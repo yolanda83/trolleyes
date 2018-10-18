@@ -56,7 +56,7 @@ public class TipousuarioService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			TipousuarioDao oTipousuarioDao=new TipousuarioDao(oConnection);
-			Boolean strTipousuarioBean = oTipousuarioDao.remove(id);
+			String strTipousuarioBean = oTipousuarioDao.remove(id);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(strTipousuarioBean));
 		} catch (Exception ex) {
