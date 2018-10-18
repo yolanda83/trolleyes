@@ -45,9 +45,7 @@ public class TipousuarioDao {
 				oPreparedStatement.close();
 			}
 		}
-
 		return oTipousuarioBean;
-
 	}
 	
 	
@@ -72,9 +70,7 @@ public class TipousuarioDao {
 				oPreparedStatement.close();
 			}
 		}
-
 		return strRes;
-
 	}
 	
 	
@@ -100,9 +96,7 @@ public class TipousuarioDao {
 				oPreparedStatement.close();
 			}
 		}
-
 		return res;
-
 	}
 	
 	
