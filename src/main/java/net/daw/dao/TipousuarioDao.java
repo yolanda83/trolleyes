@@ -53,7 +53,7 @@ public class TipousuarioDao {
 	public String remove(int id) throws Exception {
 		String strRes;
 		String strSQL = "DELETE FROM " + ob + " WHERE id=?";
-		ResultSet oResultSet = null;
+		
 		PreparedStatement oPreparedStatement =null;
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
@@ -63,9 +63,6 @@ public class TipousuarioDao {
 		} catch (SQLException e) {
 			throw new Exception ("Error en Dao remove de tipousuario",e);
 		} finally {
-			if (oResultSet!=null) {
-				oResultSet.close();
-			}
 			if (oPreparedStatement!=null) {
 				oPreparedStatement.close();
 			}
@@ -97,6 +94,49 @@ public class TipousuarioDao {
 			}
 		}
 		return res;
+	}
+	
+	
+	public String create(String desc) throws Exception {
+		String strRes;
+		String strSQL = "INSERT INTO `tipousuario` (`id`, `desc`) VALUES (NULL, ?); ";
+		
+		PreparedStatement oPreparedStatement =null;
+		try {
+			oPreparedStatement = oConnection.prepareStatement(strSQL);
+			oPreparedStatement.setString(1, desc);
+			oPreparedStatement.execute();
+			strRes = "Registro añadido.";
+		} catch (SQLException e) {
+			throw new Exception ("Error en Dao create de tipousuario",e);
+		} finally {
+			if (oPreparedStatement!=null) {
+				oPreparedStatement.close();
+			}
+		}
+		return strRes;
+	}
+	
+	
+	public String update(int id, String desc) throws Exception {
+		String strRes;
+		String strSQL = "UPDATE `tipousuario` SET `desc` = ? WHERE `tipousuario`.`id` = ?;";
+		
+		PreparedStatement oPreparedStatement =null;
+		try {
+			oPreparedStatement = oConnection.prepareStatement(strSQL);
+			oPreparedStatement.setString(1, desc);
+			oPreparedStatement.setInt(2, id);
+			oPreparedStatement.execute();
+			strRes = "Registro editado.";
+		} catch (SQLException e) {
+			throw new Exception ("Error en Dao update de tipousuario",e);
+		} finally {
+			if (oPreparedStatement!=null) {
+				oPreparedStatement.close();
+			}
+		}
+		return strRes;
 	}
 	
 	
