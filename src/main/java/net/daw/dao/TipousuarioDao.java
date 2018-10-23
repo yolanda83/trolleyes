@@ -105,8 +105,8 @@ public class TipousuarioDao {
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
 			oPreparedStatement.setString(1, desc);
-			oPreparedStatement.execute();
-			strRes = "Registro añadido.";
+			oPreparedStatement.executeUpdate();
+			strRes = "Registro aÃ±adido.";
 		} catch (SQLException e) {
 			throw new Exception ("Error en Dao create de tipousuario",e);
 		} finally {
@@ -127,7 +127,7 @@ public class TipousuarioDao {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
 			oPreparedStatement.setString(1, desc);
 			oPreparedStatement.setInt(2, id);
-			oPreparedStatement.execute();
+			oPreparedStatement.executeUpdate();
 			strRes = "Registro editado.";
 		} catch (SQLException e) {
 			throw new Exception ("Error en Dao update de tipousuario",e);
