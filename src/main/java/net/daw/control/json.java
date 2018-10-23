@@ -43,7 +43,7 @@ public class json extends HttpServlet {
 		String strOb = request.getParameter("ob");
 		String strOp = request.getParameter("op");
 		JsonHelper json = new JsonHelper();
-		
+
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (Exception ex) {
@@ -61,8 +61,8 @@ public class json extends HttpServlet {
 
 //							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
 //									+ "}";
-							
-							strJson = json.strJson(oReplyBean.getStatus(),oReplyBean.getJson());
+
+							strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
 
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
@@ -76,8 +76,8 @@ public class json extends HttpServlet {
 							ReplyBean oReplyBean = oService.remove();
 //							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
 //									+ "}";
-							
-							strJson = json.strJson(oReplyBean.getStatus(),oReplyBean.getJson());
+
+							strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -90,7 +90,7 @@ public class json extends HttpServlet {
 							ReplyBean oReplyBean = oService.getcount();
 //							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
 //									+ "}";
-							strJson = json.strJson(oReplyBean.getStatus(),oReplyBean.getJson());
+							strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -103,14 +103,14 @@ public class json extends HttpServlet {
 							ReplyBean oReplyBean = oService.create();
 //							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
 //									+ "}";
-							
-							strJson = json.strJson(oReplyBean.getStatus(),oReplyBean.getJson());
+
+							strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
-					
+
 					if (strOp.equalsIgnoreCase("update")) {
 
 						TipousuarioService oService = new TipousuarioService(request);
@@ -118,8 +118,8 @@ public class json extends HttpServlet {
 							ReplyBean oReplyBean = oService.update();
 //							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
 //									+ "}";
-							
-							strJson = json.strJson(oReplyBean.getStatus(),oReplyBean.getJson());
+
+							strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
 						} catch (Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -138,13 +138,14 @@ public class json extends HttpServlet {
 
 							response.setStatus(200);
 //							strJson = "{\"status\":200,\"msg\":\"Connection OK\"}";
-							strJson = json.strJson(200,"Connection OK");
+							strJson = json.strJson(200, "Connection OK");
 
 						} catch (Exception ex) {
 							response.setStatus(500);
 //							strJson = "{\"status\":500,\"msg\":\"Bad Connection: "
 //									+ EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())) + "\"}";
-							strJson = json.strJson(500,"Bad Connection: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+							strJson = json.strJson(500, "Bad Connection: "
+									+ EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
 						}
 
 					}
@@ -162,29 +163,29 @@ public class json extends HttpServlet {
 							oSession.setAttribute("daw", strUser);
 							response.setStatus(200);
 //							strJson = "{\"status\":200,\"msg\":\"" + strUser + "\"}";
-							strJson = json.strJson(200,strUser);
+							strJson = json.strJson(200, strUser);
 						} else {
 							response.setStatus(401);
 //							strJson = "{\"status\":401,\"msg\":\"Authentication error\"}";
-							strJson = json.strJson(401,"Authentication error");
+							strJson = json.strJson(401, "Authentication error");
 						}
 					}
 					if (strOp.equalsIgnoreCase("logout")) {
 						oSession.invalidate();
 						response.setStatus(200);
 //						strJson = "{\"status\":200,\"msg\":\"Session is closed\"}";
-						strJson = json.strJson(200,"Session is closed");
+						strJson = json.strJson(200, "Session is closed");
 					}
 					if (strOp.equalsIgnoreCase("check")) {
 						String strUserName = (String) oSession.getAttribute("daw");
 						if (strUserName != null) {
 							response.setStatus(200);
 //							strJson = "{\"status\":200,\"msg\":\"" + strUserName + "\"}";
-							strJson = json.strJson(200,"Session is closed");
+							strJson = json.strJson(200, "Session is closed");
 						} else {
 							response.setStatus(401);
 //							strJson = "{\"status\":401,\"msg\":\"Authentication error\"}";
-							strJson = json.strJson(401,"Authentication error");
+							strJson = json.strJson(401, "Authentication error");
 						}
 					}
 					if (strOp.equalsIgnoreCase("getsecret")) {
@@ -192,11 +193,11 @@ public class json extends HttpServlet {
 						if (strUserName != null) {
 							response.setStatus(200);
 //							strJson = "{\"status\":200,\"msg\":\"985739847598\"}";
-							strJson = json.strJson(200,"985739847598");
+							strJson = json.strJson(200, "985739847598");
 						} else {
 							response.setStatus(401);
 //							strJson = "{\"status\":401,\"msg\":\"Authentication error\"}";
-							strJson = json.strJson(401,"Authentication error");
+							strJson = json.strJson(401, "Authentication error");
 						}
 					}
 				}
@@ -204,12 +205,12 @@ public class json extends HttpServlet {
 			} else {
 				response.setStatus(500);
 //				strJson = "{\"status\":500,\"msg\":\"operation or object empty\"}";
-				strJson = json.strJson(500,"operation or object empty");
+				strJson = json.strJson(500, "operation or object empty");
 			}
 		} else {
 			response.setStatus(500);
 //			strJson = "{\"status\":500,\"msg\":\"operation or object can't be null\"}";
-			strJson = json.strJson(500,"operation or object can't be null");
+			strJson = json.strJson(500, "operation or object can't be null");
 		}
 
 		response.getWriter().append(strJson).close();
