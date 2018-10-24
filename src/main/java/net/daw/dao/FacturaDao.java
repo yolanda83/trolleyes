@@ -1,27 +1,36 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package net.daw.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+import net.daw.bean.FacturaBean;
 import net.daw.bean.TipousuarioBean;
 
-public class TipousuarioDao {
-
-	Connection oConnection;
+/**
+ *
+ * @author a044531896d
+ */
+public class FacturaDao {
+    Connection oConnection;
 	String ob = null;
 
-	public TipousuarioDao(Connection oConnection, String ob) {
+	public FacturaDao(Connection oConnection, String ob) {
 		super();
 		this.oConnection = oConnection;
 		this.ob = ob;
 	}
 
-	public TipousuarioBean get(int id) throws Exception {
+	public FacturaBean get(int id) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
-		TipousuarioBean oTipousuarioBean;
+		FacturaBean oFacturaBean;
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
@@ -29,11 +38,13 @@ public class TipousuarioDao {
 			oPreparedStatement.setInt(1, id);
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
-				oTipousuarioBean = new TipousuarioBean();
-				oTipousuarioBean.setId(oResultSet.getInt("id"));
-				oTipousuarioBean.setDesc(oResultSet.getString("desc"));
+				oFacturaBean = new FacturaBean();
+				oFacturaBean.setId(oResultSet.getInt("id"));
+                                oFacturaBean.setFecha(oResultSet.getDate("fecha"));
+                                oFacturaBean.setIva(oResultSet.getDouble("iva"));
+                                oFacturaBean.setId_usuario(oResultSet.getInt("id_usuario"));
 			} else {
-				oTipousuarioBean = null;
+				oFacturaBean = null;
 			}
 		} catch (SQLException e) {
 			throw new Exception("Error en Dao get de " + ob, e);
@@ -45,7 +56,7 @@ public class TipousuarioDao {
 				oPreparedStatement.close();
 			}
 		}
-		return oTipousuarioBean;
+		return oFacturaBean;
 	}
 
 	public int remove(int id) throws Exception {
@@ -90,19 +101,21 @@ public class TipousuarioDao {
 		return res;
 	}
 
-	public TipousuarioBean create(TipousuarioBean oTipousuarioBean) throws Exception {
-		String strSQL = "INSERT INTO " + ob + " (`id`, `desc`) VALUES (NULL, ?); ";
+	public FacturaBean create(FacturaBean oFacturaBean) throws Exception {
+		String strSQL = "INSERT INTO " + ob + " ( "+ob+".id,  "+ob+".fecha,  "+ob+".iva, "+ob+".id_usuario) VALUES (NULL, ?,?,?); ";
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
-			oPreparedStatement.setString(1, oTipousuarioBean.getDesc());
+			oPreparedStatement.setDate(1, (Date) oFacturaBean.getFecha());
+                        oPreparedStatement.setDouble(2, oFacturaBean.getIva());
+                        oPreparedStatement.setInt(3, oFacturaBean.getId_usuario());
 			oPreparedStatement.executeUpdate();
 			oResultSet = oPreparedStatement.getGeneratedKeys();
 			if (oResultSet.next()) {
-				oTipousuarioBean.setId(oResultSet.getInt(1));
+				oFacturaBean.setId(oResultSet.getInt(1));
 			} else {
-				oTipousuarioBean.setId(0);
+				oFacturaBean.setId(0);
 			}
 		} catch (SQLException e) {
 			throw new Exception("Error en Dao create de " + ob, e);
@@ -114,22 +127,23 @@ public class TipousuarioDao {
 				oPreparedStatement.close();
 			}
 		}
-		return oTipousuarioBean;
+		return oFacturaBean;
 	}
 
-	public int update(TipousuarioBean oTipousuarioBean) throws Exception {
+	public int update(FacturaBean oFacturaBean) throws Exception {
 		int iResult = 0;
-		String strSQL = "UPDATE " + ob + " SET " + ob + ".desc=? WHERE " + ob + ".id=?;";
-
+		String strSQL = "UPDATE " + ob + " SET "+ob+".fecha = ?, "+ob+".iva = ?, "+ob+".id_usuario=?  WHERE "+ob+".id = ?;";
 		PreparedStatement oPreparedStatement = null;
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);
-			oPreparedStatement.setString(1, oTipousuarioBean.getDesc());
-			oPreparedStatement.setInt(2, oTipousuarioBean.getId());
+			oPreparedStatement.setDate(1, (Date) oFacturaBean.getFecha());
+			oPreparedStatement.setDouble(2, oFacturaBean.getIva());
+                        oPreparedStatement.setDouble(3, oFacturaBean.getIva());
+                        oPreparedStatement.setDouble(4, oFacturaBean.getId_usuario());
 			iResult = oPreparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new Exception("Error en Dao update de " + ob , e);
+			throw new Exception("Error en Dao update de " + ob, e);
 		} finally {
 			if (oPreparedStatement != null) {
 				oPreparedStatement.close();
@@ -138,9 +152,9 @@ public class TipousuarioDao {
 		return iResult;
 	}
 
-	public ArrayList<TipousuarioBean> getpage(int iRpp, int iPage) throws Exception {
+	public ArrayList<FacturaBean> getpage(int iRpp, int iPage) throws Exception {
 		String strSQL = "SELECT * FROM " + ob;
-		ArrayList<TipousuarioBean> alTipousuarioBean;
+		ArrayList<FacturaBean> alFacturaBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 			strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
 			ResultSet oResultSet = null;
@@ -148,12 +162,14 @@ public class TipousuarioDao {
 			try {
 				oPreparedStatement = oConnection.prepareStatement(strSQL);
 				oResultSet = oPreparedStatement.executeQuery();
-				alTipousuarioBean = new ArrayList<TipousuarioBean>();
+				alFacturaBean = new ArrayList<FacturaBean>();
 				while (oResultSet.next()) {
-					TipousuarioBean oTipousuarioBean = new TipousuarioBean();
-					oTipousuarioBean.setId(oResultSet.getInt("id"));
-					oTipousuarioBean.setDesc(oResultSet.getString("desc"));
-					alTipousuarioBean.add(oTipousuarioBean);
+					FacturaBean oFacturaBean = new FacturaBean();
+                                        oFacturaBean.setId(oResultSet.getInt("id"));
+                                        oFacturaBean.setFecha(oResultSet.getDate("fecha"));
+                                        oFacturaBean.setIva(oResultSet.getDouble("iva"));
+                                        oFacturaBean.setId_usuario(oResultSet.getInt("id_usuario"));
+					alFacturaBean.add(oFacturaBean);
 				}
 			} catch (SQLException e) {
 				throw new Exception("Error en Dao getpage de " + ob, e);
@@ -168,8 +184,7 @@ public class TipousuarioDao {
 		} else {
 			throw new Exception("Error en Dao getpage de " + ob);
 		}
-		return alTipousuarioBean;
+		return alFacturaBean;
 
 	}
-
 }

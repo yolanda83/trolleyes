@@ -1,26 +1,33 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package net.daw.service;
 
+import com.google.gson.Gson;
 import java.sql.Connection;
 import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
-
-import com.google.gson.Gson;
-
+import net.daw.bean.FacturaBean;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.TipousuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
+import net.daw.dao.FacturaDao;
 import net.daw.dao.TipousuarioDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
 
-public class TipousuarioService {
-
-	HttpServletRequest oRequest;
+/**
+ *
+ * @author a044531896d
+ */
+public class FacturaService {
+    HttpServletRequest oRequest;
 	String ob = null;
 
-	public TipousuarioService(HttpServletRequest oRequest) {
+	public FacturaService(HttpServletRequest oRequest) {
 		super();
 		this.oRequest = oRequest;
 		ob = oRequest.getParameter("ob");
@@ -34,10 +41,10 @@ public class TipousuarioService {
 			Integer id = Integer.parseInt(oRequest.getParameter("id"));
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
-			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-			TipousuarioBean oTipousuarioBean = oTipousuarioDao.get(id);
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			FacturaBean oFacturaBean = oFacturaDao.get(id);
 			Gson oGson = new Gson();
-			oReplyBean = new ReplyBean(200, oGson.toJson(oTipousuarioBean));
+			oReplyBean = new ReplyBean(200, oGson.toJson(oFacturaBean));
 		} catch (Exception ex) {
 			oReplyBean = new ReplyBean(500,
 					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
@@ -57,8 +64,8 @@ public class TipousuarioService {
 			Integer id = Integer.parseInt(oRequest.getParameter("id"));
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
-			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-			int iRes = oTipousuarioDao.remove(id);
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			int iRes = oFacturaDao.remove(id);
 			oReplyBean = new ReplyBean(200, Integer.toString(iRes));
 		} catch (Exception ex) {
 			oReplyBean = new ReplyBean(500,
@@ -77,8 +84,8 @@ public class TipousuarioService {
 		try {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
-			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-			int registros = oTipousuarioDao.getcount();
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			int registros = oFacturaDao.getcount();
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(registros));
 		} catch (Exception ex) {
@@ -99,13 +106,13 @@ public class TipousuarioService {
 		try {
 			String strJsonFromClient = oRequest.getParameter("json");
 			Gson oGson = new Gson();
-			TipousuarioBean oTipousuarioBean = new TipousuarioBean();
-			oTipousuarioBean = oGson.fromJson(strJsonFromClient, TipousuarioBean.class);
+			FacturaBean oFacturaBean = new FacturaBean();
+			oFacturaBean = oGson.fromJson(strJsonFromClient, FacturaBean.class);
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
-			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-			oTipousuarioBean = oTipousuarioDao.create(oTipousuarioBean);
-			oReplyBean = new ReplyBean(200, oGson.toJson(oTipousuarioBean));
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			oFacturaBean = oFacturaDao.create(oFacturaBean);
+			oReplyBean = new ReplyBean(200, oGson.toJson(oFacturaBean));
 		} catch (Exception ex) {
 			oReplyBean = new ReplyBean(500,
 					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
@@ -117,19 +124,20 @@ public class TipousuarioService {
 
 	public ReplyBean update() throws Exception {
 		int iRes = 0;
-		ReplyBean oReplyBean;
+		ReplyBean oReplyBean = null;
 		ConnectionInterface oConnectionPool = null;
 		Connection oConnection;
 		try {
 			String strJsonFromClient = oRequest.getParameter("json");
 			Gson oGson = new Gson();
-			TipousuarioBean oTipousuarioBean = new TipousuarioBean();
-			oTipousuarioBean = oGson.fromJson(strJsonFromClient, TipousuarioBean.class);
+			FacturaBean oFacturaBean = new FacturaBean();
+			oFacturaBean = oGson.fromJson(strJsonFromClient, FacturaBean.class);
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
-			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-			iRes = oTipousuarioDao.update(oTipousuarioBean);
-                        oReplyBean = new ReplyBean(200,Integer.toString(iRes));
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			iRes = oFacturaDao.update(oFacturaBean);
+			oReplyBean.setStatus(200);
+			oReplyBean.setJson(Integer.toString(iRes));
 		} catch (Exception ex) {
 			oReplyBean = new ReplyBean(500,
 					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
@@ -148,10 +156,10 @@ public class TipousuarioService {
 			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
-			TipousuarioDao oTipousuarioDao = new TipousuarioDao(oConnection, ob);
-			ArrayList<TipousuarioBean> alTipousuarioBean = oTipousuarioDao.getpage(iRpp, iPage);
+			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage);
 			Gson oGson = new Gson();
-			oReplyBean = new ReplyBean(200, oGson.toJson(alTipousuarioBean));
+			oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
 		} catch (Exception ex) {
 			oReplyBean = new ReplyBean(500,
 					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
@@ -162,5 +170,4 @@ public class TipousuarioService {
 		return oReplyBean;
 
 	}
-
 }
