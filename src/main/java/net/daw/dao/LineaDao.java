@@ -102,7 +102,7 @@ public class LineaDao {
     }
 
     public LineaBean create(LineaBean oLineaBean) throws Exception {
-        String strSQL = "INSERT INTO " + ob + " (`id`, `cantidad`, `id_producto`, `id_factura`) VALUES (NULL, ?, ?, ?); ";
+        String strSQL = "INSERT INTO " + ob + " ("+ob+".id, "+ob+".cantidad, "+ob+".id_producto, "+ob+".id_factura) VALUES (NULL, ?, ?, ?); ";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {

@@ -15,6 +15,7 @@ import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
 import net.daw.helper.JsonHelper;
 import net.daw.service.FacturaService;
+import net.daw.service.LineaService;
 import net.daw.service.ProductoService;
 import net.daw.service.TipoproductoService;
 import net.daw.service.TipousuarioService;
@@ -385,6 +386,91 @@ public class json extends HttpServlet {
                     if (strOp.equalsIgnoreCase("update")) {
 
                         ProductoService oService = new ProductoService(request);
+                        try {
+                            ReplyBean oReplyBean = oService.update();
+//							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
+//									+ "}";
+
+                            strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                if (strOb.equalsIgnoreCase("linea")) {
+                    if (strOp.equalsIgnoreCase("get")) {
+
+                        LineaService oService = new LineaService(request);
+                        try {
+                            ReplyBean oReplyBean = oService.get();
+
+//							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
+//									+ "}";
+                            strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
+
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if (strOp.equalsIgnoreCase("getpage")) {
+                        LineaService oService = new LineaService(request);
+                        try {
+                            ReplyBean oReplyBean = oService.getpage();
+                            strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if (strOp.equalsIgnoreCase("remove")) {
+
+                        LineaService oService = new LineaService(request);
+                        try {
+                            ReplyBean oReplyBean = oService.remove();
+//							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
+//									+ "}";
+
+                            strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    if (strOp.equalsIgnoreCase("getcount")) {
+
+                        LineaService oService = new LineaService(request);
+                        try {
+                            ReplyBean oReplyBean = oService.getcount();
+//							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
+//									+ "}";
+                            strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    if (strOp.equalsIgnoreCase("create")) {
+
+                        LineaService oService = new LineaService(request);
+                        try {
+                            ReplyBean oReplyBean = oService.create();
+//							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()
+//									+ "}";
+
+                            strJson = json.strJson(oReplyBean.getStatus(), oReplyBean.getJson());
+                        } catch (Exception e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+
+                    if (strOp.equalsIgnoreCase("update")) {
+
+                        LineaService oService = new LineaService(request);
                         try {
                             ReplyBean oReplyBean = oService.update();
 //							strJson = "{\"status\":" + oReplyBean.getStatus() + ",\"message\":" + oReplyBean.getJson()

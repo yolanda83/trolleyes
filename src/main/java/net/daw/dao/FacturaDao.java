@@ -102,7 +102,7 @@ public class FacturaDao {
 	}
 
 	public FacturaBean create(FacturaBean oFacturaBean) throws Exception {
-		String strSQL = "INSERT INTO " + ob + " (`id`, `fecha`, `iva`,`id_usuario`) VALUES (NULL, ?,?,?); ";
+		String strSQL = "INSERT INTO " + ob + " ( "+ob+".id,  "+ob+".fecha,  "+ob+".iva, "+ob+".id_usuario) VALUES (NULL, ?,?,?); ";
 		ResultSet oResultSet = null;
 		PreparedStatement oPreparedStatement = null;
 		try {
