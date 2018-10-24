@@ -119,7 +119,7 @@ public class TipousuarioDao {
 
 	public int update(TipousuarioBean oTipousuarioBean) throws Exception {
 		int iResult = 0;
-		String strSQL = "UPDATE " + ob + " SET desc = ? WHERE id = ?;";
+		String strSQL = "UPDATE " + ob + " SET " + ob + ".desc=? WHERE " + ob + ".id=?;";
 
 		PreparedStatement oPreparedStatement = null;
 		try {
@@ -129,7 +129,7 @@ public class TipousuarioDao {
 			iResult = oPreparedStatement.executeUpdate();
 
 		} catch (SQLException e) {
-			throw new Exception("Error en Dao update de " + ob, e);
+			throw new Exception("Error en Dao update de " + ob , e);
 		} finally {
 			if (oPreparedStatement != null) {
 				oPreparedStatement.close();
@@ -139,7 +139,7 @@ public class TipousuarioDao {
 	}
 
 	public ArrayList<TipousuarioBean> getpage(int iRpp, int iPage) throws Exception {
-		String strSQL = "SELECT * FROM `tipousuario` ";
+		String strSQL = "SELECT * FROM " + ob;
 		ArrayList<TipousuarioBean> alTipousuarioBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 			strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;

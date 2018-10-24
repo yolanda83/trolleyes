@@ -146,7 +146,7 @@ public class TipoproductoDao {
 	}
 
 	public ArrayList<TipoproductoBean> getpage(int iRpp, int iPage) throws Exception {
-		String strSQL = "SELECT * FROM `tipousuario` ";
+		String strSQL = "SELECT * FROM " + ob;
 		ArrayList<TipoproductoBean> alTipoproductoBean;
 		if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
 			strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
