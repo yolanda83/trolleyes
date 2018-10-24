@@ -132,7 +132,7 @@ public class FacturaDao {
 
 	public int update(FacturaBean oFacturaBean) throws Exception {
 		int iResult = 0;
-		String strSQL = "UPDATE " + ob + " SET fecha = ?,iva = ?,id_usuario=?  WHERE id = ?;";
+		String strSQL = "UPDATE " + ob + " SET "+ob+".fecha = ?, "+ob+".iva = ?, "+ob+".id_usuario=?  WHERE "+ob+".id = ?;";
 		PreparedStatement oPreparedStatement = null;
 		try {
 			oPreparedStatement = oConnection.prepareStatement(strSQL);

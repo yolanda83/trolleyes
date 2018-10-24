@@ -126,7 +126,7 @@ public class TipoproductoDao {
 
 	public int update(TipoproductoBean oTipoproductoBean) throws Exception {
 		int iResult = 0;
-		String strSQL = "UPDATE " + ob + " SET desc = ? WHERE id = ?;";
+		String strSQL = "UPDATE " + ob + " SET " + ob +".desc = ? WHERE id = ?;";
 
 		PreparedStatement oPreparedStatement = null;
 		try {
