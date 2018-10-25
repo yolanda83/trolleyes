@@ -116,6 +116,9 @@ public class UsuarioService {
             Gson oGson = new Gson();
             oConnection = oConnectionPool.newConnection();
             UsuarioBean oUsuarioBean = new UsuarioBean();
+            oUsuarioBean = oGson.fromJson(oRequest.getParameter("json"), UsuarioBean.class);
+            oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
+            /*
             InputStream test = oRequest.getInputStream();
             StringBuilder stringBuilder = new StringBuilder();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(test));
@@ -125,8 +128,7 @@ public class UsuarioService {
             while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
                 stringBuilder.append(charBuffer, 0, bytesRead);
             }
-            oReplyBean = new ReplyBean(200, oGson.toJson(stringBuilder));
-            /*
+            
             oUsuarioBean = oGson.fromJson(oRequest.getParameter("usuario"), UsuarioBean.class);
             //oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
