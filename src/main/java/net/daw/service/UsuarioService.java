@@ -113,30 +113,20 @@ public class UsuarioService {
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
         try {
-            Gson oGson = new Gson();
-            oConnection = oConnectionPool.newConnection();
-            UsuarioBean oUsuarioBean = new UsuarioBean();
-            oUsuarioBean = oGson.fromJson(oRequest.getParameter("json"), UsuarioBean.class);
-            oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
-            /*
-            InputStream test = oRequest.getInputStream();
-            StringBuilder stringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(test));
-            char[] charBuffer = new char[128];
-            int bytesRead = -1;
-
-            while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
-                stringBuilder.append(charBuffer, 0, bytesRead);
+            BufferedReader br = new BufferedReader(new InputStreamReader(oRequest.getInputStream()));
+            String json = "";
+            if (br != null) {
+                json = br.readLine();
             }
-            
-            oUsuarioBean = oGson.fromJson(oRequest.getParameter("usuario"), UsuarioBean.class);
-            //oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 
+            Gson oGson = new Gson();
+            UsuarioBean oUsuarioBean = new UsuarioBean();
+            oUsuarioBean = oGson.fromJson(json, UsuarioBean.class);
+            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+            oConnection = oConnectionPool.newConnection();
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
             oUsuarioBean = oUsuarioDao.create(oUsuarioBean);
-            
-             */
+            oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
         } catch (Exception ex) {
             oReplyBean = new ReplyBean(500,
                     "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
