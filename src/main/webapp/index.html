@@ -47,6 +47,14 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label id="nombreLabel">Nombre</label>
+                            <input type="text" class="form-control" id="nombre">
+                            <div class="alert alert-danger" id="diverrornombre">
+                                <strong>Error !</strong>
+                                <div id="errornombre"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="ape1">Primer apellido</label>
                             <input type="text" class="form-control" id="ape1">
                             <div class="alert alert-danger" id="diverrorape1">
@@ -64,7 +72,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tipousuario">Tipo de usuario</label>
-                            <select class="custom-select">
+                            <select id="select" class="custom-select">
                                 <option value=1>
                                     Administrador
                                 </option>
@@ -129,6 +137,9 @@
                 $("#dni").keyup(function () {
                     validar('dni');
                 })
+                $("#nombre").keyup(function () {
+                    validar('nombre');
+                })
                 $("#ape1").keyup(function () {
                     validar('ape1');
                 })
@@ -142,6 +153,7 @@
                 }
                 //Metodo de validacion del input primero
                 usuario = false;
+                nombre = false;
                 pass = false;
                 dni = false;
                 ape1 = false;
@@ -161,13 +173,14 @@
                 }
                 function esconderErrores() {
                     $("#diverrorusuario").hide();
+                    $("#diverrornombre").hide();
                     $("#diverrorpass").hide();
                     $("#diverrordni").hide();
                     $("#diverrorape1").hide();
                     $("#diverrorape2").hide();
                 }
                 let dUsuario = '';
-                let dLogin = '';
+                let dNombre = '';
                 let dPass = '';
                 let dDni = '';
                 let dApe1 = '';
@@ -177,8 +190,8 @@
                         case 'usuario':
                             dUsuario = valor;
                             break;
-                        case 'login':
-                            dLogin = valor;
+                        case 'nombre':
+                            dNombre = valor;
                             break;
                         case 'pass':
                             dPass = forge_sha256(valor);
@@ -199,8 +212,8 @@
                         case 'usuario':
                             usuario = false;
                             break;
-                        case 'login':
-                            usuario = false;
+                        case 'nombre':
+                            nombre = false;
                             break;
                         case 'pass':
                             pass = false;
@@ -221,8 +234,8 @@
                         case 'usuario':
                             usuario = true;
                             break;
-                        case 'login':
-                            usuario = true;
+                        case 'nombre':
+                            nombre = true;
                             break;
                         case 'pass':
                             pass = true;
@@ -250,19 +263,22 @@
                 }
                 $("#crear").click(function () {
                     json = {
-                        'nombre': dUsuario,
-                        'login': dLogin,
+                        'login': dUsuario,
+                        'nombre': dNombre,
                         'pass': dPass,
                         'dni': dDni,
                         'ape1': dApe1,
                         'ape2': dApe2,
-                        'id_tipoUsuario': $(this).find(':selected').attr('value')
+                        'id_tipoUsuario': $("#select").val()
                     }
                     console.log(json);
                     $.ajax({
                         url: `json?ob=usuario&op=create`,
                         dataType: "json",
                         method: "POST",
+                        type: "POST",
+                        contentType: 'application/json',
+                        mimeType: 'application/json',
                         data: JSON.stringify(json),
                         success: function (data) {
                             console.log(data);
