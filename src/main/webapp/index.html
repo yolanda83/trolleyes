@@ -79,187 +79,198 @@
             <div id="botones" class="row justify-content-center mt-5 pb-2 pt-2 mx-auto" style="background-color: slateblue; width: 600px; border: 2px solid black">
                 <button type="reset" class="btn btn-primary ml-1" id="crear">Crear usuario</button>
             </div>
-<!--            <div class="row">
-                <div class="col text-center mt-3" id="tituloError">
-                    <div class="alert alert-danger" role="alert">
-                        <h4 class="alert-heading" id="tituloResultadoError"></h4>
-                        <hr>
-                        <p class="mb-0" id="resultadoOperacionError"></p>
-                        <hr>
-                        <h4 class="alert-heading" id="tituloResultadoError">Parametros:</h4>
-                        <p class="mb-0" id="resultadoParametrosError"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-center mt-3" id="titulo">
-                    <div class="alert alert-success" role="alert">
-                        <h4 class="alert-heading" id="tituloResultado"></h4>
-                        <hr>
-                        <p class="mb-0" id="resultadoOperacion"></p>
-                        <hr>
-                        <h4 class="alert-heading">Parametros:</h4>
-                        <p class="mb-0" id="resultadoParametros"></p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <table class="table">
-                    <tbody class="text-center" id="cuerpo">
-
-                    </tbody>
-                </table>
-            </div>-->
+            <!--            <div class="row">
+                            <div class="col text-center mt-3" id="tituloError">
+                                <div class="alert alert-danger" role="alert">
+                                    <h4 class="alert-heading" id="tituloResultadoError"></h4>
+                                    <hr>
+                                    <p class="mb-0" id="resultadoOperacionError"></p>
+                                    <hr>
+                                    <h4 class="alert-heading" id="tituloResultadoError">Parametros:</h4>
+                                    <p class="mb-0" id="resultadoParametrosError"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-center mt-3" id="titulo">
+                                <div class="alert alert-success" role="alert">
+                                    <h4 class="alert-heading" id="tituloResultado"></h4>
+                                    <hr>
+                                    <p class="mb-0" id="resultadoOperacion"></p>
+                                    <hr>
+                                    <h4 class="alert-heading">Parametros:</h4>
+                                    <p class="mb-0" id="resultadoParametros"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="table">
+                                <tbody class="text-center" id="cuerpo">
+            
+                                </tbody>
+                            </table>
+                        </div>-->
         </div>
-       <script>
-		$(document).ready(function () {
-			esconderErrores();
-			desabilitarBoton();
-			//Como la funcion keyup solo acepta clases he tendipo que buscar esta otra forma para que 
-			//la funcion keyup se trague los id en vez de las clases
-			//+info: https://stackoverflow.com/questions/4655376/jquery-bind-keyup-to-body-in-firefox
-			//$("body").on('keyup', "#usuario", validar('usuario'));
-			//$("body").on('keyup', "#pass", validar('pass'));
-			$("#usuario").keyup(function () {
-				validar('usuario');
-			})
-			$("#pass").keyup(function () {
-				validar('pass');
-			})
-			$("#dni").keyup(function () {
-				validar('dni');
-			})
-			$("#ape1").keyup(function () {
-				validar('ape1');
-			})
-			$("#ape2").keyup(function () {
-				validar('ape2');
-			})
-			//Funcion que me muestra los mensajes de error debajo de cada input
-			function mensajes(error, div, mensaje) {
-				$(`#error${error}`).empty().append(mensaje);
-				$(`#diverror${div}`).show();
-			}
-			//Metodo de validacion del input primero
-			usuario = false;
-			pass = false;
-			dni = false;
-			ape1 = false;
-			ape2 = false;
-			function validar(data) {
-				switchFalse(data);
-				$(`#error${data}`).empty();
-				$(`#diverror${data}`).hide();
-				valor = $(`#${data}`).val();
-				if (valor.length == 0) {
-					mensajes(data, data, `Inserta datos en ${data}`);
-				} else {
-					switchTrue(data);
-					guardarDatos(data, valor);
-				}
-				desabilitarBoton();
-			}
-			function esconderErrores() {
-				$("#diverrorusuario").hide();
-				$("#diverrorpass").hide();
-				$("#diverrordni").hide();
-				$("#diverrorape1").hide();
-				$("#diverrorape2").hide();
-			}
-			let dUsuario = '';
-			let dPass = '';
-			let dDni = '';
-			let dApe1 = '';
-			let dApe2 = '';
-			function guardarDatos(data, valor) {
-				switch (data) {
-					case 'usuario':
-						dUsuario = valor;
-						break;
-					case 'pass':
-						dPass = forge_sha256(valor);
-						break;
-					case 'dni':
-						dDni = valor;
-						break;
-					case 'ape1':
-						dApe1 = valor;
-						break;
-					case 'ape2':
-						dApe2 = valor;
-						break;
-				}
-			}
-			function switchFalse(data) {
-				switch (data) {
-					case 'usuario':
-						usuario = false;
-						break;
-					case 'pass':
-						pass = false;
-						break;
-					case 'dni':
-						dni = false;
-						break;
-					case 'ape1':
-						ape1 = false;
-						break;
-					case 'ape2':
-						ape2 = false;
-						break;
-				}
-			}
-			function switchTrue(data) {
-				switch (data) {
-					case 'usuario':
-						usuario = true;
-						break;
-					case 'pass':
-						pass = true;
-						break;
-					case 'dni':
-						dni = true;
-						break;
-					case 'ape1':
-						ape1 = true;
-						break;
-					case 'ape2':
-						ape2 = true;
-						break;
-				}
-			}
-			//Funcion para desabilitar el boton enviar
-			function desabilitarBoton() {
-				if (usuario == true && pass == true && dni == true && ape1 == true && ape2 == true) {
-					$("#loggearse").attr("disabled", false);
-					$("#crear").attr("disabled", false);
-				} else {
-					$("#loggearse").attr("disabled", true);
-					$("#crear").attr("disabled", true);
-				}
-			}
-			$("#crear").click(function () {
-				json = {
-					'nombre': dUsuario,
-					'pass': dPass,
-					'dni': dDni,
-					'ape1': dApe1,
-					'ape2': dApe2,
-					'id_tipoUsuario': $(this).find(':selected').attr('value')
-				}
-				console.log(json);
-				$.ajax({
-					url: `json?ob=usuario&op=create`,
-					dataType: "json",
-					method: "POST",
-					data: JSON.stringify(json),
-					success: function (data) {
-						console.log(data);
-					}
-				});
-			});
-		});
-	</script>
+        <script>
+            $(document).ready(function () {
+                esconderErrores();
+                desabilitarBoton();
+                //Como la funcion keyup solo acepta clases he tendipo que buscar esta otra forma para que 
+                //la funcion keyup se trague los id en vez de las clases
+                //+info: https://stackoverflow.com/questions/4655376/jquery-bind-keyup-to-body-in-firefox
+                //$("body").on('keyup', "#usuario", validar('usuario'));
+                //$("body").on('keyup', "#pass", validar('pass'));
+                $("#usuario").keyup(function () {
+                    validar('usuario');
+                })
+                $("#pass").keyup(function () {
+                    validar('pass');
+                })
+                $("#dni").keyup(function () {
+                    validar('dni');
+                })
+                $("#ape1").keyup(function () {
+                    validar('ape1');
+                })
+                $("#ape2").keyup(function () {
+                    validar('ape2');
+                })
+                //Funcion que me muestra los mensajes de error debajo de cada input
+                function mensajes(error, div, mensaje) {
+                    $(`#error${error}`).empty().append(mensaje);
+                    $(`#diverror${div}`).show();
+                }
+                //Metodo de validacion del input primero
+                usuario = false;
+                pass = false;
+                dni = false;
+                ape1 = false;
+                ape2 = false;
+                function validar(data) {
+                    switchFalse(data);
+                    $(`#error${data}`).empty();
+                    $(`#diverror${data}`).hide();
+                    valor = $(`#${data}`).val();
+                    if (valor.length == 0) {
+                        mensajes(data, data, `Inserta datos en ${data}`);
+                    } else {
+                        switchTrue(data);
+                        guardarDatos(data, valor);
+                    }
+                    desabilitarBoton();
+                }
+                function esconderErrores() {
+                    $("#diverrorusuario").hide();
+                    $("#diverrorpass").hide();
+                    $("#diverrordni").hide();
+                    $("#diverrorape1").hide();
+                    $("#diverrorape2").hide();
+                }
+                let dUsuario = '';
+                let dLogin = '';
+                let dPass = '';
+                let dDni = '';
+                let dApe1 = '';
+                let dApe2 = '';
+                function guardarDatos(data, valor) {
+                    switch (data) {
+                        case 'usuario':
+                            dUsuario = valor;
+                            break;
+                        case 'login':
+                            dLogin = valor;
+                            break;
+                        case 'pass':
+                            dPass = forge_sha256(valor);
+                            break;
+                        case 'dni':
+                            dDni = valor;
+                            break;
+                        case 'ape1':
+                            dApe1 = valor;
+                            break;
+                        case 'ape2':
+                            dApe2 = valor;
+                            break;
+                    }
+                }
+                function switchFalse(data) {
+                    switch (data) {
+                        case 'usuario':
+                            usuario = false;
+                            break;
+                        case 'login':
+                            usuario = false;
+                            break;
+                        case 'pass':
+                            pass = false;
+                            break;
+                        case 'dni':
+                            dni = false;
+                            break;
+                        case 'ape1':
+                            ape1 = false;
+                            break;
+                        case 'ape2':
+                            ape2 = false;
+                            break;
+                    }
+                }
+                function switchTrue(data) {
+                    switch (data) {
+                        case 'usuario':
+                            usuario = true;
+                            break;
+                        case 'login':
+                            usuario = true;
+                            break;
+                        case 'pass':
+                            pass = true;
+                            break;
+                        case 'dni':
+                            dni = true;
+                            break;
+                        case 'ape1':
+                            ape1 = true;
+                            break;
+                        case 'ape2':
+                            ape2 = true;
+                            break;
+                    }
+                }
+                //Funcion para desabilitar el boton enviar
+                function desabilitarBoton() {
+                    if (usuario == true && pass == true && dni == true && ape1 == true && ape2 == true) {
+                        $("#loggearse").attr("disabled", false);
+                        $("#crear").attr("disabled", false);
+                    } else {
+                        $("#loggearse").attr("disabled", true);
+                        $("#crear").attr("disabled", true);
+                    }
+                }
+                $("#crear").click(function () {
+                    json = {
+                        'nombre': dUsuario,
+                        'login': dLogin,
+                        'pass': dPass,
+                        'dni': dDni,
+                        'ape1': dApe1,
+                        'ape2': dApe2,
+                        'id_tipoUsuario': $(this).find(':selected').attr('value')
+                    }
+                    console.log(json);
+                    $.ajax({
+                        url: `json?ob=usuario&op=create`,
+                        dataType: "json",
+                        method: "POST",
+                        data: JSON.stringify(json),
+                        success: function (data) {
+                            console.log(data);
+                        }
+                    });
+                });
+            });
+        </script>
 
     </body>
 
