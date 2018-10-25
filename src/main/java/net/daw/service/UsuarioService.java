@@ -116,32 +116,25 @@ public class UsuarioService {
             Gson oGson = new Gson();
             oConnection = oConnectionPool.newConnection();
             UsuarioBean oUsuarioBean = new UsuarioBean();
-            BufferedReader in = new BufferedReader(new InputStreamReader(oRequest.getInputStream()));
-            String inputLine;
-            StringBuilder body;
-            try {
+            InputStream test = oRequest.getInputStream();
+            StringBuilder stringBuilder = new StringBuilder();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(test));
+            char[] charBuffer = new char[128];
+            int bytesRead = -1;
 
-                body = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    body.append(inputLine);
-                }
-                in.close();
-
-                oReplyBean = new ReplyBean(200, ob);
-                System.out.print(body.toString());
-            } catch (IOException ioe) {
-                throw ioe;
+            while ((bytesRead = bufferedReader.read(charBuffer)) > 0) {
+                stringBuilder.append(charBuffer, 0, bytesRead);
             }
-/*
+            oReplyBean = new ReplyBean(200, oGson.toJson(stringBuilder));
+            /*
             oUsuarioBean = oGson.fromJson(oRequest.getParameter("usuario"), UsuarioBean.class);
             //oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
             oUsuarioBean = oUsuarioDao.create(oUsuarioBean);
-            oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
-*/
+            
+             */
         } catch (Exception ex) {
             oReplyBean = new ReplyBean(500,
                     "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
