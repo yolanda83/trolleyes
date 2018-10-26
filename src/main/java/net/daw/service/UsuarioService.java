@@ -43,9 +43,8 @@ public class UsuarioService {
 			UsuarioBean oUsuarioBean = oUsuarioDao.get(id);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
-		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+		} catch (Exception ex) {		
+			 throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);			
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -66,9 +65,7 @@ public class UsuarioService {
 			int iRes = oUsuarioDao.remove(id);
 			oReplyBean = new ReplyBean(200, Integer.toString(iRes));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
-		} finally {
+			throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);		} finally {
 			oConnectionPool.disposeConnection();
 		}
 		return oReplyBean;
@@ -87,8 +84,7 @@ public class UsuarioService {
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(registros));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: getcount method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -112,8 +108,7 @@ public class UsuarioService {
 			oUsuarioBean = oUsuarioDao.create(oUsuarioBean);
 			oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -136,8 +131,7 @@ public class UsuarioService {
 			iRes = oUsuarioDao.update(oUsuarioBean);
                         oReplyBean = new ReplyBean(200, Integer.toString(iRes));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -158,8 +152,7 @@ public class UsuarioService {
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: get page: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
