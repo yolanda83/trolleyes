@@ -105,7 +105,7 @@ public class UsuarioDao {
     }
 
     public UsuarioBean create(UsuarioBean oUsuarioBean) throws Exception {
-        String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".dni, " + ob + ".nombre, " + ob + ".ape1, " + ob + ".ape2, " + ob + ".login, " + ob + ".pass, " + ob + ".id_tipoUsuario`) VALUES (NULL, ?,?,?,?,?,?,?); ";
+        String strSQL = "INSERT INTO " + ob + " (`id`, `dni`,`nombre`,`ape1`,`ape2`,`login`,`pass`,`id_tipoUsuario`) VALUES (NULL, ?,?,?,?,?,?,?); ";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
