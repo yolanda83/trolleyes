@@ -14,7 +14,7 @@ import net.daw.bean.UsuarioBean;
 
 /**
  *
- * @author jesus
+ * @author Ramón
  */
 public class UsuarioDao {
 
@@ -105,7 +105,7 @@ public class UsuarioDao {
     }
 
     public UsuarioBean create(UsuarioBean oUsuarioBean) throws Exception {
-        String strSQL = "INSERT INTO " + ob + " (`id`, `dni`,`nombre`,`ape1`,`ape2`,`login`,`pass`,`id_tipoUsuario`) VALUES (NULL, ?,?,?,?,?,?,?); ";
+        String strSQL = "INSERT INTO " + ob + " (id,dni,nombre,ape1,ape2,login,pass,id_tipoUsuario) VALUES (NULL, ?,?,?,?,?,?,?); ";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {

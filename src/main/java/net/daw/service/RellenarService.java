@@ -10,14 +10,14 @@ import net.daw.bean.ProductoBean;
 
 /**
  *
- * @author a044531896d
+ * @author RamÃ³n
  */
 public class RellenarService {
 
     public ArrayList<ProductoBean> RellenarProducto(int numero) {
-        String[] codigo = {"D3Q","F5Q","DP5","84D","63P"};
-        String[] desc = {"sistema", "tubo", "soporte","estación", " accesorio"};
-        String[] desc2 = {"capilar", "tubos","trabajo","coche","tren"};
+        String[] codigo = {"56TT","GTE4","K8J6","JKK1","TTP9"};
+        String[] desc = {"Piano", "Flauta", "Guitarra","Tuba", "Gaita"};
+        String[] desc2 = {"Viento", "Mecanico","Cuerda","Metal","Madera"};
         String foto = "Foto";
         int[] id_tipoProducto = {1, 2, 3, 4, 5};
         int[] existencias = {1, 2, 3, 4, 5};
