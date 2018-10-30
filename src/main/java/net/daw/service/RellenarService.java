@@ -31,8 +31,7 @@ public class RellenarService {
             resultadoProducto = new ProductoBean();
             resultadoProducto.setCodigo(codigo[randomMath(maxDatos)]);
             resultadoProducto.setDesc(desc[randomMath(maxDatos)] + " " + desc2[randomMath(maxDatos)]);
-            //El precio sale con 4 decimales porque creo que para el cambio de divisas mola, si no pues se redondea y au
-            resultadoProducto.setPrecio((float) (Math.random()*100));
+            resultadoProducto.setPrecio((float) (((int)(Math.random()*10000))* 0.01));
             resultadoProducto.setFoto(foto);
             resultadoProducto.setId_tipoProducto(id_tipoProducto[randomMath(maxDatos)]);
             resultadoProducto.setExistencias(existencias[randomMath(maxDatos)]);
