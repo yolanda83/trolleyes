@@ -22,7 +22,7 @@ import net.daw.helper.EncodingHelper;
  * @author jesus
  */
 public class UsuarioService {
-    HttpServletRequest oRequest;
+	HttpServletRequest oRequest;
 	String ob = null;
 
 	public UsuarioService(HttpServletRequest oRequest) {
@@ -43,8 +43,8 @@ public class UsuarioService {
 			UsuarioBean oUsuarioBean = oUsuarioDao.get(id);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
-		} catch (Exception ex) {		
-			 throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);			
+		} catch (Exception ex) {
+			throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -65,7 +65,8 @@ public class UsuarioService {
 			int iRes = oUsuarioDao.remove(id);
 			oReplyBean = new ReplyBean(200, Integer.toString(iRes));
 		} catch (Exception ex) {
-			throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);		} finally {
+			throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);
+		} finally {
 			oConnectionPool.disposeConnection();
 		}
 		return oReplyBean;
@@ -129,7 +130,7 @@ public class UsuarioService {
 			oConnection = oConnectionPool.newConnection();
 			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
 			iRes = oUsuarioDao.update(oUsuarioBean);
-                        oReplyBean = new ReplyBean(200, Integer.toString(iRes));
+			oReplyBean = new ReplyBean(200, Integer.toString(iRes));
 		} catch (Exception ex) {
 			throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
 		} finally {
@@ -160,4 +161,35 @@ public class UsuarioService {
 		return oReplyBean;
 
 	}
+
+	public ReplyBean fill() throws Exception {
+		ReplyBean oReplyBean;
+		ConnectionInterface oConnectionPool = null;
+		Connection oConnection;
+		try {
+			Integer number = Integer.parseInt(oRequest.getParameter("number"));
+			Gson oGson = new Gson();
+			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+			oConnection = oConnectionPool.newConnection();
+			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
+			UsuarioBean oUsuarioBean = new UsuarioBean();
+			for (int i = 1; i <= number; i++) {			
+				oUsuarioBean.setDni("765934875A");
+				oUsuarioBean.setNombre("Rigoberto");
+				oUsuarioBean.setApe1("Pérez");
+				oUsuarioBean.setApe2("Gómez");
+				oUsuarioBean.setLogin("ripego");
+				oUsuarioBean.setPass("hola");
+				oUsuarioBean.setId_tipoUsuario(2);
+				oUsuarioBean = oUsuarioDao.create(oUsuarioBean);
+			}
+			oReplyBean = new ReplyBean(200, oGson.toJson(number));
+		} catch (Exception ex) {
+			throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
+		} finally {
+			oConnectionPool.disposeConnection();
+		}
+		return oReplyBean;
+	}
+
 }
