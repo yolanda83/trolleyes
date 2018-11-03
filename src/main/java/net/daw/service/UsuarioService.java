@@ -171,6 +171,30 @@ public class UsuarioService {
 		return oReplyBean;
 
 	}
+        
+        public ReplyBean getpageordered() throws Exception {
+		ReplyBean oReplyBean;
+		ConnectionInterface oConnectionPool = null;
+		Connection oConnection;
+		try {
+			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
+			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+                        Integer iOrder = Integer.parseInt(oRequest.getParameter("order"));
+			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+			oConnection = oConnectionPool.newConnection();
+			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
+			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpageordered(iRpp, iPage, iOrder);
+			Gson oGson = new Gson();
+			oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
+		} catch (Exception ex) {
+			throw new Exception("ERROR: Service level: get page: " + ob + " object", ex);
+		} finally {
+			oConnectionPool.disposeConnection();
+		}
+
+		return oReplyBean;
+
+	}
 
 	public ReplyBean fill() throws Exception {
 		ReplyBean oReplyBean;
