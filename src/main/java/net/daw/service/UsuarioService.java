@@ -180,10 +180,11 @@ public class UsuarioService {
 			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
 			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
                         Integer iOrder = Integer.parseInt(oRequest.getParameter("order"));
+                        String sAlign = oRequest.getParameter("align");
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
-			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpageordered(iRpp, iPage, iOrder);
+			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpageordered(iRpp, iPage, iOrder, sAlign);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
 		} catch (Exception ex) {

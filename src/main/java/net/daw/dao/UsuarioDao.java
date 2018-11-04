@@ -206,8 +206,8 @@ public class UsuarioDao {
 
     }
     
-        public ArrayList<UsuarioBean> getpageordered(int iRpp, int iPage, int order) throws Exception {
-        String strSQL = "SELECT * FROM " + ob + " ORDER BY " + order;
+        public ArrayList<UsuarioBean> getpageordered(int iRpp, int iPage, int order, String align) throws Exception {
+        String strSQL = "SELECT * FROM " + ob + " ORDER BY " + order + " " + align;
         ArrayList<UsuarioBean> alUsuarioBean;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
