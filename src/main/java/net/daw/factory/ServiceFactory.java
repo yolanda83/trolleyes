@@ -1,4 +1,3 @@
-
 package net.daw.factory;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,6 +66,12 @@ public class ServiceFactory {
                         break;
                     case "getpage":
                         oReplyBean = oUsuarioService.getpage();
+                        break;
+                    case "getpageordered":
+                        oReplyBean = oUsuarioService.getpageordered();
+                        break;
+                    case "fill":
+                        oReplyBean = oUsuarioService.fill();
                         break;
                     default:
                         oReplyBean = new ReplyBean(500, "Operation doesn't exist");
