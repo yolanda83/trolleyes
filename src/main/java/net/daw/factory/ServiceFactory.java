@@ -67,9 +67,6 @@ public class ServiceFactory {
                     case "getpage":
                         oReplyBean = oUsuarioService.getpage();
                         break;
-                    case "getpageordered":
-                        oReplyBean = oUsuarioService.getpageordered();
-                        break;
                     case "fill":
                         oReplyBean = oUsuarioService.fill();
                         break;
