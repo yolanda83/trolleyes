@@ -1,233 +1,293 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Ejercicio CS</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-	crossorigin="anonymous">
+<html class="d-flex h-100">
+    <head>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="forge-sha256.min.js"></script>
+        <meta charset="UTF-8">
+    </head>
+    <body class="container d-flex h-100" style="background-color: goldenrod">
+        <div class="container pt-2 pb-2 mt-2 my-auto" style="background-color: cadetblue; width: 650px; border: 5px solid black">
+            <div class="row mt-2 mx-auto" style="background-color: slateblue; width: 600px; border: 2px solid black">
 
-<style>
-div {
-	margin-top: 20px;
-}
+                <div class="col text-center pt-2">
+                    <h3>Authentication</h3>
+                </div>
+            </div>
+            <div class="row mt-5 mx-auto" id="form" style="background-color: slateblue; padding-top: 5px; width: 600px; border: 2px solid black">
 
-label {
-	font-weight: bold;
-}
-
-#alerta {
-	text-align: center;
-}
-
-.container{
-	visibility: hidden;
-}
-
-
-</style>
-</head>
-<body>
-	<div class="container">
-		<center>
-			<h1>Formulario de logeo</h1>
-		</center>
-		<form>
-			<div class="form-group">
-				<label for="user" id="luser">Usuario</label> <input type="text"
-					class="form-control" id="user" placeholder="Introduce usuario">
-				<div id="msgUser"></div>
-			</div>
-			<div class="form-group">
-				<label for="pass" id="lpass">Contraseña</label> <input type="password"
-					class="form-control" id="pass" placeholder="Introduce Contraseña">
-				<div id="msgPass"></div>
-			</div>
-		</form>
-		<button type="button" name="login" value="Login" id="login" class="btn btn-success" disabled>Login</button>
-		<button type="button" name="logout" value="logout" id="logout" class="btn btn-warning" >Logout</button>
-		<button type="button" name="connect" value="connect" id="connect" class="btn btn-info">Connect</button>
-		<button type="button" name="getsecret" value="getsecret" id="getsecret" class="btn btn-success">Secret</button>
-		<button type="button" name="check" value="check" id="check" class="btn btn-success">Check</button>
-		<button type="reset" name="limpiar" value="Limpiar" id="limpiar" class="btn btn-danger">Limpiar</button>
-		<div id="alerta"></div>
-		<div id="msgConexion"></div>
-	</div>
-	
-	<script>
+                <div class="col-12">
+                    <form id="formulario" >
+                        <div class="form-group">
+                            <label id="primeroLabel">Id</label>
+                            <input type="text" class="form-control" id="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label id="primeroLabel">Usuario</label>
+                            <input type="text" class="form-control" id="usuario">
+                            <div class="alert alert-danger" id="diverrorusuario">
+                                <strong>Error !</strong>
+                                <div id="errorusuario"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="segundoLabel">Password</label>
+                            <input type="password" class="form-control" id="pass">
+                            <div class="alert alert-danger" id="diverrorpass">
+                                <strong>Error!</strong>
+                                <div id="errorpass"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="dni">Dni</label>
+                            <input type="text" class="form-control" id="dni">
+                            <div class="alert alert-danger" id="diverrordni">
+                                <strong>Error !</strong>
+                                <div id="errordni"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="nombreLabel">Nombre</label>
+                            <input type="text" class="form-control" id="nombre">
+                            <div class="alert alert-danger" id="diverrornombre">
+                                <strong>Error !</strong>
+                                <div id="errornombre"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ape1">Primer apellido</label>
+                            <input type="text" class="form-control" id="ape1">
+                            <div class="alert alert-danger" id="diverrorape1">
+                                <strong>Error !</strong>
+                                <div id="errorape1"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="ape2">Segundo apellido</label>
+                            <input type="text" class="form-control" id="ape2">
+                            <div class="alert alert-danger" id="diverrorape2">
+                                <strong>Error !</strong>
+                                <div id="errorape2"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipousuario">Tipo de usuario</label>
+                            <select id="select" class="custom-select">
+                                <option value=1>
+                                    Administrador
+                                </option>
+                                <option value=2>
+                                    Usuario
+                                </option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div id="botones" class="row justify-content-center mt-5 pb-2 pt-2 mx-auto" style="background-color: slateblue; width: 600px; border: 2px solid black">
+                <button type="reset" class="btn btn-primary ml-1" id="crear">Crear usuario</button>
+            </div>
+            <!--            <div class="row">
+                            <div class="col text-center mt-3" id="tituloError">
+                                <div class="alert alert-danger" role="alert">
+                                    <h4 class="alert-heading" id="tituloResultadoError"></h4>
+                                    <hr>
+                                    <p class="mb-0" id="resultadoOperacionError"></p>
+                                    <hr>
+                                    <h4 class="alert-heading" id="tituloResultadoError">Parametros:</h4>
+                                    <p class="mb-0" id="resultadoParametrosError"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col text-center mt-3" id="titulo">
+                                <div class="alert alert-success" role="alert">
+                                    <h4 class="alert-heading" id="tituloResultado"></h4>
+                                    <hr>
+                                    <p class="mb-0" id="resultadoOperacion"></p>
+                                    <hr>
+                                    <h4 class="alert-heading">Parametros:</h4>
+                                    <p class="mb-0" id="resultadoParametros"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <table class="table">
+                                <tbody class="text-center" id="cuerpo">
+            
+                                </tbody>
+                            </table>
+                        </div>-->
+        </div>
+        <script>
             $(document).ready(function () {
-            	peticion("refresh");
-            	
-                function nombre(str) {
-                    return /^[a-zA-Z1-9]*$/.test(str);
+                esconderErrores();
+                desabilitarBoton();
+                //Como la funcion keyup solo acepta clases he tendipo que buscar esta otra forma para que 
+                //la funcion keyup se trague los id en vez de las clases
+                //+info: https://stackoverflow.com/questions/4655376/jquery-bind-keyup-to-body-in-firefox
+                //$("body").on('keyup', "#usuario", validar('usuario'));
+                //$("body").on('keyup', "#pass", validar('pass'));
+                $("#usuario").keyup(function () {
+                    validar('usuario');
+                })
+                $("#pass").keyup(function () {
+                    validar('pass');
+                })
+                $("#dni").keyup(function () {
+                    validar('dni');
+                })
+                $("#nombre").keyup(function () {
+                    validar('nombre');
+                })
+                $("#ape1").keyup(function () {
+                    validar('ape1');
+                })
+                $("#ape2").keyup(function () {
+                    validar('ape2');
+                })
+                //Funcion que me muestra los mensajes de error debajo de cada input
+                function mensajes(error, div, mensaje) {
+                    $(`#error${error}`).empty().append(mensaje);
+                    $(`#diverror${div}`).show();
                 }
-
-                $("#user").keyup(function () {
-                user = $("#user").val();
-                if ((nombre($("#user").val()))) {
-                    if (!($("#user").val() == "")) {
-                        $("#msgUser").attr("class", "alert alert-success");
-                        $("#user").css("border-color", "green");
-                        $("#msgUser").empty().append("Correcto");
-                        if ((nombre($("#pass").val())) && (!($("#pass").val() == ""))) {
-                            $("#login").attr("disabled", false);
-                        }
-
+                //Metodo de validacion del input primero
+                usuario = false;
+                nombre = false;
+                pass = false;
+                dni = false;
+                ape1 = false;
+                ape2 = false;
+                function validar(data) {
+                    switchFalse(data);
+                    $(`#error${data}`).empty();
+                    $(`#diverror${data}`).hide();
+                    valor = $(`#${data}`).val();
+                    if (valor.length == 0) {
+                        mensajes(data, data, `Inserta datos en ${data}`);
                     } else {
-                        $("#msgUser").attr("class", "alert alert-danger");
-                        $("#msgUser").empty().append("Debes escribir un nombre de usuario");
-                        $("#user").css("border-color", "red");
-                        $("#login").attr("disabled", true);
+                        switchTrue(data);
+                        guardarDatos(data, valor);
                     }
-
-                } else {
-                    $("#msgUser").attr("class", "alert alert-danger");
-                    $("#msgUser").empty().append("No puedes dejar espacios en blanco");
-                    $("#user").css("border-color", "red");
-                    $("#login").attr("disabled", true);
+                    desabilitarBoton();
                 }
-            });
-            $("#pass").keyup(function () {
-                pass = $("#pass").val();
-                if ((nombre($("#pass").val()))) {
-	                if (!pass == "") {
-	                    $("#msgPass").attr("class", "alert alert-success");
-	                    $("#pass").css("border-color", "green");
-	                    $("#msgPass").empty().append("Correcto");
-	                    if ((nombre($("#user").val())) && (!($("#user").val() == ""))) {
-	                        $("#login").attr("disabled", false);
-	                    }
-	
-	                } else {
-	                    $("#msgPass").attr("class", "alert alert-danger");
-	                    $("#msgPass").empty().append("La contraseña no debe estar vacía.");
-	                    $("#pass").css("border-color", "red");
-	                    $("#login").attr("disabled", true);
-	                }
-	            } else {
-	                $("#msgPass").attr("class", "alert alert-danger");
-	                $("#msgPass").empty().append("La contraseña no puede tener espacios en blanco");
-	                $("#pass").css("border-color", "red");
-	                $("#login").attr("disabled", true);
-	            }
-            });
-
-	            $("#limpiar").click(function () {
-	                limpiar();
-	            });
-                $("#login").click(function () {
-                    peticion("login");
-                });
-                $("#connect").click(function () {
-                	limpiar();
-                    peticion("connect");
-                });
-                $("#logout").click(function () {
-                    peticion("logout");
-                    limpiar();
-                });
-                $("#check").click(function () {
-                    peticion("check");
-                });
-                $("#getsecret").click(function () {
-                    peticion("getsecret");
-                });
-
-                function esconder(){
-                	$("#msgUser").hide();
-            		$("#user").hide();
-            		$("#luser").hide();
-            		$("#msgPass").hide();
-            		$("#pass").hide();
-            		$("#lpass").hide();
-            		$("#login").hide();
-            		$("#getsecret").show();
-            		$("#logout").show();
-            		$("#connect").show();
-            		$(".container").css("visibility","visible");
+                function esconderErrores() {
+                    $("#diverrorusuario").hide();
+                    $("#diverrornombre").hide();
+                    $("#diverrorpass").hide();
+                    $("#diverrordni").hide();
+                    $("#diverrorape1").hide();
+                    $("#diverrorape2").hide();
                 }
-                
-                function mostrar(){
-                	$("#msgUser").show();
-            		$("#user").show();
-            		$("#luser").show();
-            		$("#msgPass").show();
-            		$("#pass").show();
-            		$("#lpass").show();
-            		$("#login").show();
-            		$("#getsecret").hide();
-            		$("#logout").hide();
-            		$("#connect").hide();
-            		$(".container").css("visibility","visible");
+                let dUsuario = '';
+                let dNombre = '';
+                let dPass = '';
+                let dDni = '';
+                let dApe1 = '';
+                let dApe2 = '';
+                function guardarDatos(data, valor) {
+                    switch (data) {
+                        case 'usuario':
+                            dUsuario = valor;
+                            break;
+                        case 'nombre':
+                            dNombre = valor;
+                            break;
+                        case 'pass':
+                            dPass = forge_sha256(valor);
+                            break;
+                        case 'dni':
+                            dDni = valor;
+                            break;
+                        case 'ape1':
+                            dApe1 = valor;
+                            break;
+                        case 'ape2':
+                            dApe2 = valor;
+                            break;
+                    }
                 }
-                
-                function peticion(op){
-                	var ob = "usuario";
-                	$("#alerta").attr("class", "");
-                	if(op === "login"){
-                    var user = $("#user").val();
-                    var pass = $("#pass").val();
-                    var url = "/trolleyes/json?ob="+ob+"&user=" + user + "&pass=" + pass + "&op=" + op;
-                	}else{
-                		if(op === "refresh"){
-                			var url = "/trolleyes/json?ob="+ob+"&op=check";
-                		}else{
-                			var url = "/trolleyes/json?ob="+ob+"&op=" + op;
-                		}
-                	}
+                function switchFalse(data) {
+                    switch (data) {
+                        case 'usuario':
+                            usuario = false;
+                            break;
+                        case 'nombre':
+                            nombre = false;
+                            break;
+                        case 'pass':
+                            pass = false;
+                            break;
+                        case 'dni':
+                            dni = false;
+                            break;
+                        case 'ape1':
+                            ape1 = false;
+                            break;
+                        case 'ape2':
+                            ape2 = false;
+                            break;
+                    }
+                }
+                function switchTrue(data) {
+                    switch (data) {
+                        case 'usuario':
+                            usuario = true;
+                            break;
+                        case 'nombre':
+                            nombre = true;
+                            break;
+                        case 'pass':
+                            pass = true;
+                            break;
+                        case 'dni':
+                            dni = true;
+                            break;
+                        case 'ape1':
+                            ape1 = true;
+                            break;
+                        case 'ape2':
+                            ape2 = true;
+                            break;
+                    }
+                }
+                //Funcion para desabilitar el boton enviar
+                function desabilitarBoton() {
+                    if (usuario == true && pass == true && dni == true && ape1 == true && ape2 == true) {
+                        $("#loggearse").attr("disabled", false);
+                        $("#crear").attr("disabled", false);
+                    } else {
+                        $("#loggearse").attr("disabled", true);
+                        $("#crear").attr("disabled", true);
+                    }
+                }
+                $("#crear").click(function () {
+                    json = {
+                        'login': dUsuario,
+                        'nombre': dNombre,
+                        'pass': dPass,
+                        'dni': dDni,
+                        'ape1': dApe1,
+                        'ape2': dApe2,
+                        'id_tipoUsuario': $("#select").val()
+                    }
+                    console.log(json);
                     $.ajax({
-                        url: url,
-                        cache: false,
-                        method: "GET",
+                        url: `json?ob=usuario&op=create`,
                         dataType: "json",
+                        method: "POST",
+                        type: "POST",
+                        contentType: 'application/json',
+                        mimeType: 'application/json',
+                        data: JSON.stringify(json),
                         success: function (data) {
-                        	if(op === "login"){
-                        		esconder();
-                        	}
-                        	if(op === "logout"){
-                        		mostrar();
-                        	}
-                        	if(op==="check" || op === "refresh"){
-                        		esconder();
-                        	}
-                            $("#alerta").attr("class", "alert alert-success");
-                            $("#alerta").empty().append("<h3>"+data.status+": "+data.msg+"</h3>");
-                        },
-                        error: function (error) {
-                        	if(op==="check" || op === "refresh"){
-                        		mostrar();
-                        	}
-                        	if(op !== "refresh"){
-                            	$("#alerta").attr("class", "alert alert-danger");
-                            	$("#alerta").empty().append("<h3> status "+error.status+": "+error.responseJSON.msg+"</h3>");
-                        	}
+                            console.log(data);
                         }
-
-                    });                	
-                }
-                
-                function limpiar(){
-                	$("#alerta").attr("class", "");
-                    $("#alerta").empty();
-                    $("#user").val('');
-                    $("#pass").val('');
-                    $("#msgUser").attr("class", "");
-                    $("#msgPass").attr("class", "");
-                    $("#msgUser").empty();
-                    $("#msgPass").empty();
-                    $("#user").css("border-color", "");
-                    $("#pass").css("border-color", "");
-                    $("#login").attr("disabled", true);
-                }
-                
+                    });
+                });
             });
-        </script> 
-	
-	
-	
-</body>
+        </script>
+
+    </body>
+
 </html>

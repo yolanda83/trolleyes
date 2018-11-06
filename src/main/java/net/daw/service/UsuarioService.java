@@ -6,6 +6,15 @@
 package net.daw.service;
 
 import com.google.gson.Gson;
+import java.io.BufferedInputStream;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +25,11 @@ import net.daw.constant.ConnectionConstants;
 import net.daw.dao.UsuarioDao;
 import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
- * @author jesus
+ * @author Ramón
  */
 public class UsuarioService {
 	HttpServletRequest oRequest;
@@ -150,6 +160,31 @@ public class UsuarioService {
 			oConnection = oConnectionPool.newConnection();
 			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
 			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage);
+			Gson oGson = new Gson();
+			oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
+		} catch (Exception ex) {
+			throw new Exception("ERROR: Service level: get page: " + ob + " object", ex);
+		} finally {
+			oConnectionPool.disposeConnection();
+		}
+
+		return oReplyBean;
+
+	}
+        
+        public ReplyBean getpageordered() throws Exception {
+		ReplyBean oReplyBean;
+		ConnectionInterface oConnectionPool = null;
+		Connection oConnection;
+		try {
+			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
+			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+                        Integer iOrder = Integer.parseInt(oRequest.getParameter("order"));
+                        String sAlign = oRequest.getParameter("align");
+			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+			oConnection = oConnectionPool.newConnection();
+			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
+			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpageordered(iRpp, iPage, iOrder, sAlign);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
 		} catch (Exception ex) {
