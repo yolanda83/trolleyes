@@ -6,6 +6,8 @@
 package net.daw.service;
 
 import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Random;
@@ -116,8 +118,8 @@ public class ProductoService {
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-           
-            for(ProductoBean productos:alProductoBean){
+
+            for (ProductoBean productos : alProductoBean) {
                 oProductoBean = oProductoDao.create(productos);
             }
 //            oProductoBean = oProductoDao.create(oProductoBean);
@@ -172,6 +174,13 @@ public class ProductoService {
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
         try {
+
+//            BufferedReader br = new BufferedReader(new InputStreamReader(oRequest.getInputStream()));
+//            String json = "";
+//            if (br != null) {
+//                json = br.readLine();
+//            }
+
             String strJsonFromClient = oRequest.getParameter("json");
             Gson oGson = new Gson();
             ProductoBean oProductoBean = new ProductoBean();
@@ -198,10 +207,12 @@ public class ProductoService {
         try {
             Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
             Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+            String order = oRequest.getParameter("order");
+            String ordervalue = oRequest.getParameter("ordervalue");
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            ArrayList<ProductoBean> alProductoBean = oProductoDao.getpage(iRpp, iPage);
+            ArrayList<ProductoBean> alProductoBean = oProductoDao.getpage(iRpp, iPage, order, ordervalue);
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(alProductoBean));
         } catch (Exception ex) {
