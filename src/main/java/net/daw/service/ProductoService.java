@@ -139,8 +139,8 @@ public class ProductoService {
         Random randomCodigo = new Random();
         ProductoBean oProductoBean;
 
-        String[] desc = {"Leche sin lactosa", "Kobe", "Entrecot", "Flan casero", "Salmón ahumado",
-            "Yogurt piña", "Lubina", "Cordero", "Arroz con leche", "Flan",
+        String[] desc = {"Leche sin lactosa", "Kobe", "Entrecot", "Flan casero", "Salmon ahumado",
+            "Yogurt pina", "Lubina", "Cordero", "Arroz con leche", "Flan",
             "Natillas", "Dorada", "Pechuga pavo", "Conejo", "Mantequilla", "Bacalao", "Leche entera",
             "Filete de buey", "Hamburguesa pollo", "Queso fresco"};
         Integer[] tipoProducto = {1, 2, 3, 4};
