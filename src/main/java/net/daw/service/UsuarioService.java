@@ -147,23 +147,23 @@ public class UsuarioService {
             "87911495K", "03309113B", "36646306S", "15928151F", "14973941K", "42402099N", "40274838K",
             "87430150C", "33081180G", "54757727V"};
         String[] nombre = {"ANTONIO", "JOSE", "JUAN", "GERMAN", "MIKEL",
-            "GERARDO", "PASCUAL", "IÑAKI", "LEO", "GINES",
+            "GERARDO", "PASCUAL", "INAKI", "LEO", "GINES",
             "JOSEFA", "LUCIA", "JULIA", "SUSANA", "EVA", "CATALINA", "DANIELA",
             "LUISA", "ADRIANA", "ESTEFANIA"};
         String[] ape1 = {"GONZALEZ", "RODRIGUEZ", "FERNANDEZ", "LOPEZ", "MARTINEZ", "SANCHEZ", "PEREZ", "GOMEZ",
-            "MARTIN", "JIMENEZ", "RUIZ", "HERNANDEZ", "DIAZ", "MUÑOZ", "ALVAREZ", "ROMERO", "ALONSO", "GUTIERREZ",
+            "MARTIN", "JIMENEZ", "RUIZ", "HERNANDEZ", "DIAZ", "MUnOZ", "ALVAREZ", "ROMERO", "ALONSO", "GUTIERREZ",
             "RAMOS", "CASTILLO"};
         String[] ape2 = {"GONZALEZ", "RODRIGUEZ", "FERNANDEZ", "LOPEZ", "MARTINEZ", "SANCHEZ", "PEREZ", "GOMEZ",
-            "MARTIN", "JIMENEZ", "RUIZ", "HERNANDEZ", "DIAZ", "MUÑOZ", "ALVAREZ", "ROMERO", "ALONSO", "GUTIERREZ",
+            "MARTIN", "JIMENEZ", "RUIZ", "HERNANDEZ", "DIAZ", "MUnOZ", "ALVAREZ", "ROMERO", "ALONSO", "GUTIERREZ",
             "RAMOS", "CASTILLO"};
         String[] login = {"Ton", "Kitty", "Dog", "Rob", "Cat",
             "Ger", "Pascu", "Isla", "Cinta", "Japan",
             "Sonar", "Miki", "Cons", "Green", "Black", "Pat", "Azar",
             "Batik", "Play", "Monster"};
-        String[] pass = {"abc", "def", "ghi", "jkl", "mnñ",
+        String[] pass = {"abc", "def", "ghi", "jkl", "mn5",
             "opq", "rst", "uvw", "xyz", "123",
             "456", "789", "0AB", "CDE", "FGH", "IJK", "LMN",
-            "ÑOP", "QRS", "TUV"};
+            "0OP", "QRS", "TUV"};
         Integer[] tipoUsuario = {2, 3};
 
         for (int i = 0; i < 5; i++) {
