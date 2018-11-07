@@ -56,8 +56,8 @@ public class UsuarioService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
-			UsuarioBean oUsuarioBean = oUsuarioDao.get(id);
-			//Gson oGson = new Gson();			
+			UsuarioBean oUsuarioBean = oUsuarioDao.get(id, 1);
+			// Gson oGson = new Gson();
 			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
 		} catch (Exception ex) {
@@ -117,7 +117,7 @@ public class UsuarioService {
 		Connection oConnection;
 		try {
 			String strJsonFromClient = oRequest.getParameter("json");
-			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();								
+			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
 			UsuarioBean oUsuarioBean = new UsuarioBean();
 			oUsuarioBean = oGson.fromJson(strJsonFromClient, UsuarioBean.class);
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
@@ -167,7 +167,7 @@ public class UsuarioService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
-			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage, hmOrder);
+			ArrayList<UsuarioBean> alUsuarioBean = oUsuarioDao.getpage(iRpp, iPage, hmOrder,1);
 			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alUsuarioBean));
 		} catch (Exception ex) {
@@ -179,8 +179,6 @@ public class UsuarioService {
 		return oReplyBean;
 
 	}
-
-	
 
 	public ReplyBean fill() throws Exception {
 		ReplyBean oReplyBean;

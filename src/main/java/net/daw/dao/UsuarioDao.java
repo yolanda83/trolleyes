@@ -30,7 +30,7 @@ public class UsuarioDao {
 		this.ob = ob;
 	}
 
-	public UsuarioBean get(int id) throws Exception {
+	public UsuarioBean get(int id, Integer expand) throws Exception {
 		String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
 		UsuarioBean oUsuarioBean;
 		ResultSet oResultSet = null;
@@ -41,14 +41,12 @@ public class UsuarioDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oUsuarioBean = new UsuarioBean();
-				oUsuarioBean.setId(oResultSet.getInt("id"));
-				oUsuarioBean.setDni(oResultSet.getString("dni"));
-				oUsuarioBean.setNombre(oResultSet.getString("nombre"));
-				oUsuarioBean.setApe1(oResultSet.getString("ape1"));
-				oUsuarioBean.setApe2(oResultSet.getString("ape2"));
-				oUsuarioBean.setLogin(oResultSet.getString("login"));
-				oUsuarioBean.setPass(oResultSet.getString("pass"));
-				oUsuarioBean.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
+				oUsuarioBean.fill(oResultSet, oConnection, expand);
+				
+				
+				
+				
+				
 			} else {
 				oUsuarioBean = null;
 			}
@@ -171,7 +169,7 @@ public class UsuarioDao {
 		return iResult;
 	}
 
-	public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder) throws Exception {
+	public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, Integer expand) throws Exception {
 		String strSQL = "SELECT * FROM " + ob;
 		strSQL += SqlBuilder.buildSqlOrder(hmOrder);
 		ArrayList<UsuarioBean> alUsuarioBean;
@@ -185,14 +183,11 @@ public class UsuarioDao {
 				alUsuarioBean = new ArrayList<UsuarioBean>();
 				while (oResultSet.next()) {
 					UsuarioBean oUsuarioBean = new UsuarioBean();
-					oUsuarioBean.setId(oResultSet.getInt("id"));
-					oUsuarioBean.setDni(oResultSet.getString("dni"));
-					oUsuarioBean.setNombre(oResultSet.getString("nombre"));
-					oUsuarioBean.setApe1(oResultSet.getString("ape1"));
-					oUsuarioBean.setApe2(oResultSet.getString("ape2"));
-					oUsuarioBean.setLogin(oResultSet.getString("login"));
-					oUsuarioBean.setPass(null);
-					oUsuarioBean.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
+					
+					
+					oUsuarioBean.fill(oResultSet, oConnection, expand);
+					
+					
 					alUsuarioBean.add(oUsuarioBean);
 				}
 			} catch (SQLException e) {
