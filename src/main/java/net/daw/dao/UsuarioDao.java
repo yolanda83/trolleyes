@@ -218,6 +218,5 @@ public class UsuarioDao {
 			throw new Exception("Error en Dao getpage de " + ob);
 		}
 		return alUsuarioBean;
-
 	}
 }
