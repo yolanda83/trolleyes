@@ -171,6 +171,7 @@ public class UsuarioDao {
 		}
 		return iResult;
 	}
+        
 
 	public ArrayList<UsuarioBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder) throws Exception {
 //		String strSQL = "SELECT * FROM " + ob;
