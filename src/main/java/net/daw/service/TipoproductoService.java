@@ -44,8 +44,7 @@ public class TipoproductoService {
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oTipoproductoBean));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -66,8 +65,7 @@ public class TipoproductoService {
 			int iRes = oTipoproductoDao.remove(id);
 			oReplyBean = new ReplyBean(200, Integer.toString(iRes));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -87,8 +85,7 @@ public class TipoproductoService {
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(registros));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: getcount method: " + ob + " object", ex);			
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -112,8 +109,7 @@ public class TipoproductoService {
 			oTipoproductoBean = oTipoproductoDao.create(oTipoproductoBean);
 			oReplyBean = new ReplyBean(200, oGson.toJson(oTipoproductoBean));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -137,8 +133,7 @@ public class TipoproductoService {
 			oReplyBean.setStatus(200);
 			oReplyBean.setJson(Integer.toString(iRes));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
@@ -159,8 +154,7 @@ public class TipoproductoService {
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alTipoproductoBean));
 		} catch (Exception ex) {
-			oReplyBean = new ReplyBean(500,
-					"ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+			throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
 		} finally {
 			oConnectionPool.disposeConnection();
 		}

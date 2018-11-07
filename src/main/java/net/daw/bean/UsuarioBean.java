@@ -5,17 +5,44 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
+import java.util.ArrayList;
+
 /**
  *
  * @author jesus
  */
 public class UsuarioBean {
 
-    private int id,id_tipoUsuario;
-    private String dni, nombre, ape1, ape2, login, pass;
+    @Expose
+    private int id;
+    @Expose
+    private String dni;
+    @Expose
+    private String nombre;
+    @Expose
+    private String ape1;
+    @Expose
+    private String ape2;
+    @Expose
+    private String login;
+    @Expose
+    private String pass;
+    @Expose(serialize = false)
+    private int id_tipoUsuario;
+    @Expose(deserialize = false)
+    private TipousuarioBean obj_tipoUsuario;
 
     public int getId() {
         return id;
+    }
+
+    public TipousuarioBean getObj_tipoUsuario() {
+        return obj_tipoUsuario;
+    }
+
+    public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
+        this.obj_tipoUsuario = obj_tipoUsuario;
     }
 
     public void setId(int id) {
