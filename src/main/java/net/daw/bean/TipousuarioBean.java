@@ -11,21 +11,21 @@ public class TipousuarioBean {
 	@Expose
 	private String desc;
 
-	public int getId() {
-		return id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getDesc() {
-		return desc;
-	}
+    public String getDesc() {
+        return desc;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
 	public TipousuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
 		this.setId(oResultSet.getInt("id"));
