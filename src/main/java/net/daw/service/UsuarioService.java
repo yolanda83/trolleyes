@@ -35,7 +35,7 @@ import org.apache.commons.io.IOUtils;
 
 /**
  *
- * @author Ramón
+ * @author Ramï¿½n
  */
 public class UsuarioService {
 	HttpServletRequest oRequest;
@@ -196,8 +196,8 @@ public class UsuarioService {
 			for (int i = 1; i <= number; i++) {
 				oUsuarioBean.setDni("765934875A");
 				oUsuarioBean.setNombre("Rigoberto");
-				oUsuarioBean.setApe1("Pérez");
-				oUsuarioBean.setApe2("Gómez");
+				oUsuarioBean.setApe1("Perez");
+				oUsuarioBean.setApe2("Gomez");
 				oUsuarioBean.setLogin("ripego");
 				oUsuarioBean.setPass("hola");
 				oUsuarioBean.setId_tipoUsuario(2);
