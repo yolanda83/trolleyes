@@ -7,20 +7,9 @@ package net.daw.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.BufferedInputStream;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.servlet.http.HttpServletRequest;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.UsuarioBean;
@@ -28,14 +17,12 @@ import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
 import net.daw.dao.UsuarioDao;
 import net.daw.factory.ConnectionFactory;
-import net.daw.helper.EncodingHelper;
 import net.daw.helper.ParameterCook;
 
-import org.apache.commons.io.IOUtils;
 
 /**
  *
- * @author Ram�n
+ * @author Ramon
  */
 public class UsuarioService {
 	HttpServletRequest oRequest;
@@ -66,9 +53,7 @@ public class UsuarioService {
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
-
 		return oReplyBean;
-
 	}
 
 	public ReplyBean remove() throws Exception {
@@ -88,7 +73,6 @@ public class UsuarioService {
 			oConnectionPool.disposeConnection();
 		}
 		return oReplyBean;
-
 	}
 
 	public ReplyBean getcount() throws Exception {
@@ -107,9 +91,7 @@ public class UsuarioService {
 		} finally {
 			oConnectionPool.disposeConnection();
 		}
-
 		return oReplyBean;
-
 	}
 
 	public ReplyBean create() throws Exception {
