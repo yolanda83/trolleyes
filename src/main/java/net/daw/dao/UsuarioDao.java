@@ -11,12 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import net.daw.bean.TipousuarioBean;
 import net.daw.bean.UsuarioBean;
 import net.daw.helper.SqlBuilder;
 
 /**
  *
- * @author Ramon
+ * @author Ramón
  */
 public class UsuarioDao {
 
@@ -41,7 +42,12 @@ public class UsuarioDao {
 			oResultSet = oPreparedStatement.executeQuery();
 			if (oResultSet.next()) {
 				oUsuarioBean = new UsuarioBean();
-				oUsuarioBean.fill(oResultSet, oConnection, expand);	
+				oUsuarioBean.fill(oResultSet, oConnection, expand);
+				
+				
+				
+				
+				
 			} else {
 				oUsuarioBean = null;
 			}
