@@ -275,66 +275,45 @@ public class UsuarioService {
         return alUsuario;
     }
 
-//    public ArrayList<UsuarioBean> obtenerDatos() {
-//        ArrayList<UsuarioBean> alUsuario = new ArrayList<UsuarioBean>();
-//        Random randomDesc = new Random();
-//        Random randomTipoProducto = new Random();
-//        Random randomCodigo = new Random();
-//        UsuarioBean oUsuarioBean;
-//
-//        String[] desc = {"Leche sin lactosa", "Kobe", "Entrecot", "Flan casero", "Salmon ahumado",
-//            "Yogurt pina", "Lubina", "Cordero", "Arroz con leche", "Flan",
-//            "Natillas", "Dorada", "Pechuga pavo", "Conejo", "Mantequilla", "Bacalao", "Leche entera",
-//            "Filete de buey", "Hamburguesa pollo", "Queso fresco"};
-//        Integer[] tipoProducto = {1, 2, 3, 4};
-//        String[] codigo = {"3K9GVf", "7MCm7L", "A4ny6n", "ASKP2y", "NzXW2z", "PoFiCh", "SMzVCG", "YPnoRa",
-//            "adEDSf", "iSejg3", "jFyTtN", "jWTBAq", "kBX8wX", "kYQVb2", "pRQjFo", "rhCnTF", "ruHK5q", "s8yuKi",
-//            "vWsPAh", "yB4cRh"};
-//
-//        for (int i = 0; i < 5; i++) {
-//            oUsuarioBean = new UsuarioBean();
-//            int randDesc = randomDesc.nextInt(20);
-//            int randTipoProducto = randomTipoProducto.nextInt(4);
-//            int randCodigo = randomCodigo.nextInt(20);
-//            int existencias = ThreadLocalRandom.current().nextInt(0, 3000 + 1);
-//            double precio = ThreadLocalRandom.current().nextDouble(1, 1000 + 1);
-//
-////            oUsuarioBean.setDesc(desc[randDesc]);
-////            oUsuarioBean.setId_tipoProducto(tipoProducto[randTipoProducto]);
-////            oUsuarioBean.setCodigo(codigo[randCodigo]);
-////            oUsuarioBean.setExistencias(existencias);
-////            oUsuarioBean.setPrecio((float) precio);
-//            alUsuario.add(oUsuarioBean);
-//        }
-//        return alUsuario;
-//    }
-//	public ReplyBean fill() throws Exception {
-//		ReplyBean oReplyBean;
-//		ConnectionInterface oConnectionPool = null;
-//		Connection oConnection;
-//		try {
-//			Integer number = Integer.parseInt(oRequest.getParameter("number"));
-//			Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
-//			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-//			oConnection = oConnectionPool.newConnection();
-//			UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
-//			UsuarioBean oUsuarioBean = new UsuarioBean();
-//			for (int i = 1; i <= number; i++) {
-//				oUsuarioBean.setDni("765934875A");
-//				oUsuarioBean.setNombre("Rigoberto");
-//				oUsuarioBean.setApe1("Perez");
-//				oUsuarioBean.setApe2("Gomez");
-//				oUsuarioBean.setLogin("ripego");
-//				oUsuarioBean.setPass("hola");
-//				oUsuarioBean.setId_tipoUsuario(2);
-//				oUsuarioBean = oUsuarioDao.create(oUsuarioBean);
-//			}
-//			oReplyBean = new ReplyBean(200, oGson.toJson(number));
-//		} catch (Exception ex) {
-//			throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
-//		} finally {
-//			oConnectionPool.disposeConnection();
-//		}
-//		return oReplyBean;
-//	}
+    public ReplyBean login() throws Exception {
+        ReplyBean oReplyBean;
+        ConnectionInterface oConnectionPool = null;
+        Connection oConnection;
+        String strLogin = oRequest.getParameter("user");
+        String strPassword = oRequest.getParameter("pass");
+
+        oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+        oConnection = oConnectionPool.newConnection();
+        UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
+
+        UsuarioBean oUsuarioBean = oUsuarioDao.login(strLogin, strPassword);
+        if (oUsuarioBean.getId() > 0) {
+            oRequest.getSession().setAttribute("user", oUsuarioBean);
+            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
+            oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
+        } else {
+            //throw new Exception("ERROR Bad Authentication: Service level: get page: " + ob + " object");
+            oReplyBean = new ReplyBean(401, "Bad Authentication");
+        }
+        return oReplyBean;
+    }
+
+    public ReplyBean logout() throws Exception {
+        oRequest.getSession().invalidate();
+        return new ReplyBean(200, "OK");
+    }
+
+    public ReplyBean check() throws Exception {
+        ReplyBean oReplyBean;
+        UsuarioBean oUsuarioBean;
+        oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
+        if (oUsuarioBean != null) {
+            Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
+            oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
+        } else {
+            oReplyBean = new ReplyBean(401, "No active session");
+        }
+        return oReplyBean;
+    }
+
 }
