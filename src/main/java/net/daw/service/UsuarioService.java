@@ -251,7 +251,7 @@ public class UsuarioService {
             "opq", "rst", "uvw", "xyz", "123",
             "456", "789", "0AB", "CDE", "FGH", "IJK", "LMN",
             "NOP", "QRS", "TUV"};
-        Integer[] tipoUsuario = {1, 2}; //vigilar que existan estos tipo usuario si no no los creará
+        Integer[] tipoUsuario = {1, 2}; //vigilar que existan estos tipo usuario si no no los crear
 
         for (int i = 0; i < 5; i++) {
             oUsuarioBean = new UsuarioBean();
@@ -287,7 +287,7 @@ public class UsuarioService {
         UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, ob);
 
         UsuarioBean oUsuarioBean = oUsuarioDao.login(strLogin, strPassword);
-        if (oUsuarioBean.getId() > 0) {
+        if (oUsuarioBean != null) {
             oRequest.getSession().setAttribute("user", oUsuarioBean);
             Gson oGson = (new GsonBuilder()).excludeFieldsWithoutExposeAnnotation().create();
             oReplyBean = new ReplyBean(200, oGson.toJson(oUsuarioBean));
