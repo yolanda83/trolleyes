@@ -247,10 +247,7 @@ public class UsuarioService {
             "Ger", "Pascu", "Isla", "Cinta", "Japan",
             "Sonar", "Miki", "Cons", "Green", "Black", "Pat", "Azar",
             "Batik", "Play", "Monster"};
-        String[] pass = {"abc", "def", "ghi", "jkl", "mnn",
-            "opq", "rst", "uvw", "xyz", "123",
-            "456", "789", "0AB", "CDE", "FGH", "IJK", "LMN",
-            "NOP", "QRS", "TUV"};
+//        String[] pass = {"8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"};
         Integer[] tipoUsuario = {1, 2}; //vigilar que existan estos tipo usuario si no no los crear
 
         for (int i = 0; i < 5; i++) {
@@ -268,7 +265,7 @@ public class UsuarioService {
             oUsuarioBean.setApe1(ape1[randApe1]);
             oUsuarioBean.setApe2((ape2[randApe2]));
             oUsuarioBean.setLogin(login[randLogin]);
-            oUsuarioBean.setPass(pass[randPass]);
+            oUsuarioBean.setPass("8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92");
             oUsuarioBean.setId_tipoUsuario(tipoUsuario[randTipoUsuario]);
             alUsuario.add(oUsuarioBean);
         }
@@ -300,7 +297,7 @@ public class UsuarioService {
 
     public ReplyBean logout() throws Exception {
         oRequest.getSession().invalidate();
-        return new ReplyBean(200, "OK");
+        return new ReplyBean(200, EncodingHelper.quotate("OK"));
     }
 
     public ReplyBean check() throws Exception {
