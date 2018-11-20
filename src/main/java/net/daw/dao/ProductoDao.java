@@ -10,7 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import net.daw.bean.ProductoBean;
+import net.daw.helper.SqlBuilder;
+import static sun.security.util.PropertyExpander.expand;
 
 /**
  *
@@ -27,7 +30,7 @@ public class ProductoDao {
         this.ob = ob;
     }
 
-    public ProductoBean get(int id) throws Exception {
+    public ProductoBean get(int id, Integer expand) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
         ProductoBean oProductoBean;
         ResultSet oResultSet = null;
@@ -38,13 +41,7 @@ public class ProductoDao {
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
                 oProductoBean = new ProductoBean();
-                oProductoBean.setId(oResultSet.getInt("id"));
-                oProductoBean.setCodigo(oResultSet.getString("codigo"));
-                oProductoBean.setDesc(oResultSet.getString("desc"));
-                oProductoBean.setExistencias(oResultSet.getInt("existencias"));
-                oProductoBean.setPrecio(oResultSet.getFloat("precio"));
-                oProductoBean.setFoto(oResultSet.getString("foto"));
-                oProductoBean.setId_tipoProducto(oResultSet.getInt("id_tipoProducto"));
+                oProductoBean.fill(oResultSet, oConnection, expand);
             } else {
                 oProductoBean = null;
             }
@@ -160,23 +157,13 @@ public class ProductoDao {
         }
         return iResult;
     }
-
-    public ArrayList<ProductoBean> getpage(int iRpp, int iPage) throws Exception {
-        
-        ArrayList<ProductoBean> alProductoBean;
-
+    
+        public ArrayList<ProductoBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, Integer expand) throws Exception {
         String strSQL = "SELECT * FROM " + ob;
-
-//        if (!order.equalsIgnoreCase("") && !ordervalue.equalsIgnoreCase("")) {
-//
-//            order = "`" + order + "`";
-//            strSQL += " ORDER BY " + order + " " + ordervalue;
-//
-//        }
-
+        strSQL += SqlBuilder.buildSqlOrder(hmOrder);
+        ArrayList<ProductoBean> alProductoBean;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
-
             ResultSet oResultSet = null;
             PreparedStatement oPreparedStatement = null;
             try {
@@ -185,13 +172,9 @@ public class ProductoDao {
                 alProductoBean = new ArrayList<ProductoBean>();
                 while (oResultSet.next()) {
                     ProductoBean oProductoBean = new ProductoBean();
-                    oProductoBean.setId(oResultSet.getInt("id"));
-                    oProductoBean.setCodigo(oResultSet.getString("codigo"));
-                    oProductoBean.setDesc(oResultSet.getString("desc"));
-                    oProductoBean.setExistencias(oResultSet.getInt("existencias"));
-                    oProductoBean.setPrecio(oResultSet.getFloat("precio"));
-                    oProductoBean.setFoto(oResultSet.getString("foto"));
-                    oProductoBean.setId_tipoProducto(oResultSet.getInt("id_tipoProducto"));
+
+                    oProductoBean.fill(oResultSet, oConnection, expand);
+
                     alProductoBean.add(oProductoBean);
                 }
             } catch (SQLException e) {
@@ -208,6 +191,57 @@ public class ProductoDao {
             throw new Exception("Error en Dao getpage de " + ob);
         }
         return alProductoBean;
-
     }
+
+//    public ArrayList<ProductoBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, Integer expand) throws Exception {
+//
+//        ArrayList<ProductoBean> alProductoBean;
+//
+//        String strSQL = "SELECT * FROM " + ob;
+//
+////        if (!order.equalsIgnoreCase("") && !ordervalue.equalsIgnoreCase("")) {
+////
+////            order = "`" + order + "`";
+////            strSQL += " ORDER BY " + order + " " + ordervalue;
+////
+////        }
+//        if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
+//            strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
+//
+//            ResultSet oResultSet = null;
+//            PreparedStatement oPreparedStatement = null;
+//            try {
+//                oPreparedStatement = oConnection.prepareStatement(strSQL);
+//                oResultSet = oPreparedStatement.executeQuery();
+//                alProductoBean = new ArrayList<ProductoBean>();
+//                while (oResultSet.next()) {
+//                    ProductoBean oProductoBean = new ProductoBean();
+//
+//                    oProductoBean.fill(oResultSet, oConnection, expand);
+////                    oProductoBean.setId(oResultSet.getInt("id"));
+////                    oProductoBean.setCodigo(oResultSet.getString("codigo"));
+////                    oProductoBean.setDesc(oResultSet.getString("desc"));
+////                    oProductoBean.setExistencias(oResultSet.getInt("existencias"));
+////                    oProductoBean.setPrecio(oResultSet.getFloat("precio"));
+////                    oProductoBean.setFoto(oResultSet.getString("foto"));
+////                    oProductoBean.setId_tipoProducto(oResultSet.getInt("id_tipoProducto"));
+//                    alProductoBean.add(oProductoBean);
+//                }
+//            } catch (SQLException e) {
+//                throw new Exception("Error en Dao getpage de " + ob, e);
+//            } finally {
+//                if (oResultSet != null) {
+//                    oResultSet.close();
+//                }
+//                if (oPreparedStatement != null) {
+//                    oPreparedStatement.close();
+//                }
+//            }
+//        } else {
+//            throw new Exception("Error en Dao getpage de " + ob);
+//        }
+//        return alProductoBean;
+//
+//    }
 }
+

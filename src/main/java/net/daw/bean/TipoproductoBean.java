@@ -5,27 +5,40 @@
  */
 package net.daw.bean;
 
+import com.google.gson.annotations.Expose;
+import java.sql.Connection;
+import java.sql.ResultSet;
+
 /**
  *
  * @author a044531896d
  */
 public class TipoproductoBean {
-    	private int id;
-	private String desc;
 
-	public int getId() {
-		return id;
-	}
+    @Expose
+    private int id;
+    @Expose
+    private String desc;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public String getDesc() {
-		return desc;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public void setDesc(String desc) {
-		this.desc = desc;
-	}
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public TipoproductoBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
+        this.setId(oResultSet.getInt("id"));
+        this.setDesc(oResultSet.getString("desc"));
+        return this;
+    }
 }
