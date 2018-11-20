@@ -8,16 +8,15 @@ package net.daw.service;
 import com.google.gson.Gson;
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import net.daw.bean.FacturaBean;
 import net.daw.bean.ReplyBean;
-import net.daw.bean.TipousuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
 import net.daw.dao.FacturaDao;
-import net.daw.dao.TipousuarioDao;
 import net.daw.factory.ConnectionFactory;
-import net.daw.helper.EncodingHelper;
+import net.daw.helper.ParameterCook;
 
 
 public class FacturaService {
@@ -39,7 +38,7 @@ public class FacturaService {
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-			FacturaBean oFacturaBean = oFacturaDao.get(id);
+			FacturaBean oFacturaBean = oFacturaDao.get(id,1);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(oFacturaBean));
 		} catch (Exception ex) {
@@ -117,7 +116,7 @@ public class FacturaService {
 
 	public ReplyBean update() throws Exception {
 		int iRes = 0;
-		ReplyBean oReplyBean = null;
+		ReplyBean oReplyBean;
 		ConnectionInterface oConnectionPool = null;
 		Connection oConnection;
 		try {
@@ -129,7 +128,7 @@ public class FacturaService {
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
 			iRes = oFacturaDao.update(oFacturaBean);
-			oReplyBean = new ReplyBean(200, oGson.toJson(iRes));
+                        oReplyBean = new ReplyBean(200, Integer.toString(iRes));
 		} catch (Exception ex) {
 			throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
 		} finally {
@@ -145,10 +144,11 @@ public class FacturaService {
 		try {
 			Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
 			Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+                        HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
 			oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
 			oConnection = oConnectionPool.newConnection();
 			FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage);
+			ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage, hmOrder,1);
 			Gson oGson = new Gson();
 			oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
 		} catch (Exception ex) {

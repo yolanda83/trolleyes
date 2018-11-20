@@ -100,6 +100,31 @@ public class LineaDao {
         }
         return res;
     }
+    
+    //cuenta las lineas específicas de una factura
+    public int getcountspecific(int id) throws Exception {
+        String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_factura = " + id;
+        int res = 0;
+        ResultSet oResultSet = null;
+        PreparedStatement oPreparedStatement = null;
+        try {
+            oPreparedStatement = oConnection.prepareStatement(strSQL);
+            oResultSet = oPreparedStatement.executeQuery();
+            if (oResultSet.next()) {
+                res = oResultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error en Dao get de " + ob, e);
+        } finally {
+            if (oResultSet != null) {
+                oResultSet.close();
+            }
+            if (oPreparedStatement != null) {
+                oPreparedStatement.close();
+            }
+        }
+        return res;
+    }
 
     public LineaBean create(LineaBean oLineaBean) throws Exception {
         String strSQL = "INSERT INTO " + ob + " ("+ob+".id, "+ob+".cantidad, "+ob+".id_producto, "+ob+".id_factura) VALUES (NULL, ?, ?, ?); ";

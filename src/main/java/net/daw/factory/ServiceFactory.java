@@ -128,6 +128,9 @@ public class ServiceFactory {
                     case "getcount":
                         oReplyBean = oLineaService.getcount();
                         break;
+                    case "getcountspecific":
+                        oReplyBean = oLineaService.getcountspecific();
+                        break;
                     case "getpage":
                         oReplyBean = oLineaService.getpage();
                         break;
