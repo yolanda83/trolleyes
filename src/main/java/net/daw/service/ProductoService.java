@@ -112,8 +112,8 @@ public class ProductoService {
         }
         return oReplyBean;
     }
-    
-        public ReplyBean fill() throws Exception {
+
+    public ReplyBean fill() throws Exception {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
@@ -201,9 +201,8 @@ public class ProductoService {
         }
         return oReplyBean;
     }
-    
-    
-        public ReplyBean getpage() throws Exception {
+
+    public ReplyBean getpage() throws Exception {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
@@ -249,7 +248,6 @@ public class ProductoService {
 //        return oReplyBean;
 //
 //    }
-
     public ReplyBean loaddata() throws Exception {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
