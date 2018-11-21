@@ -100,7 +100,7 @@ public class LineaDao {
         }
         return res;
     }
-    
+
     //cuenta las lineas específicas de una factura
     public int getcountspecific(int id) throws Exception {
         String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_factura = " + id;
@@ -127,7 +127,7 @@ public class LineaDao {
     }
 
     public LineaBean create(LineaBean oLineaBean) throws Exception {
-        String strSQL = "INSERT INTO " + ob + " ("+ob+".id, "+ob+".cantidad, "+ob+".id_producto, "+ob+".id_factura) VALUES (NULL, ?, ?, ?); ";
+        String strSQL = "INSERT INTO " + ob + " (" + ob + ".id, " + ob + ".cantidad, " + ob + ".id_producto, " + ob + ".id_factura) VALUES (NULL, ?, ?, ?); ";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
@@ -178,15 +178,17 @@ public class LineaDao {
         return iResult;
     }
 
-    public ArrayList<LineaBean> getpage(int iRpp, int iPage) throws Exception {
+    public ArrayList<LineaBean> getpage(int iRpp, int iPage, int id) throws Exception {
         String strSQL = "SELECT * FROM " + ob;
         ArrayList<LineaBean> alLineaBean;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
+            strSQL += " WHERE id_factura = ?";
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
             ResultSet oResultSet = null;
             PreparedStatement oPreparedStatement = null;
             try {
                 oPreparedStatement = oConnection.prepareStatement(strSQL);
+                oPreparedStatement.setInt(1, id);
                 oResultSet = oPreparedStatement.executeQuery();
                 alLineaBean = new ArrayList<LineaBean>();
                 while (oResultSet.next()) {

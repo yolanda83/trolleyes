@@ -68,21 +68,21 @@ public class FacturaBean {
         this.obj_usuario = obj_usuario;
     }
 
-    public FacturaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception{
+    public FacturaBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws SQLException, Exception {
         this.setId(oResultSet.getInt("id"));
         this.setFecha(oResultSet.getDate("fecha"));
         this.setIva(oResultSet.getDouble("iva"));
         LineaDao oLineaDao = new LineaDao(oConnection, "linea");
         this.setNumLineas(oLineaDao.getcountspecific(this.getId()));
-        if(expand > 0){
+        if (expand > 0) {
             UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
             this.setObj_usuario(oUsuarioDao.get(oResultSet.getInt("id_usuario"), expand));
             System.out.println(obj_usuario.getId());
         }
         return this;
     }
-    
-    public String getColumns(){
+
+    public String getColumns() {
         String strColumns = "";
         strColumns += "id,";
         strColumns += "fecha,";
@@ -90,8 +90,8 @@ public class FacturaBean {
         strColumns += "id_usuario";
         return strColumns;
     }
-    
-    public String getValues(){
+
+    public String getValues() {
         String strColumns = "";
         strColumns += "null,";
         strColumns += fecha + ",";
@@ -99,20 +99,26 @@ public class FacturaBean {
         strColumns += getObj_usuario().getId() + ",";
         return strColumns;
     }
-   
-    public String getPairs(){
-		
-	//Getting the default zone id
-	ZoneId defaultZoneId = ZoneId.systemDefault();
-		
-	//Converting the date to Instant
-	Instant instant = fecha.toInstant();
-		
-	//Converting the Date to LocalDate
-	LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
-	System.out.println("Local Date is: "+localDate);
-        
-        String strPairs ="";
+
+    public String getPairs() {
+
+        //Getting the default zone id
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        Instant instant = null;
+
+        if (fecha != null) {
+            //Converting the date to Instant
+            instant = fecha.toInstant();
+        } else {
+            Date fechaActual = new Date();
+            instant = fechaActual.toInstant();
+        }
+
+        //Converting the Date to LocalDate
+        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+        System.out.println("Local Date is: " + localDate);
+
+        String strPairs = "";
         strPairs += "id=" + id + ",";
         strPairs += "fecha=" + EncodingHelper.quotate(localDate.toString()) + ",";
         strPairs += "iva=" + iva + ",";
@@ -120,6 +126,5 @@ public class FacturaBean {
         strPairs += " WHERE id=" + id;
         return strPairs;
     }
-    
 
 }
