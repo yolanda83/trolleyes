@@ -41,7 +41,7 @@ public class LineaService {
             LineaDao oLineaDao = new LineaDao(oConnection, ob);
             LineaBean oLineaBean = oLineaDao.get(id);
             Gson oGson = new Gson();
-            oReplyBean = new ReplyBean(200, oGson.toJson(oLineaDao));
+            oReplyBean = new ReplyBean(200, oGson.toJson(oLineaBean));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: get method: " + ob + " object", ex);
         } finally {

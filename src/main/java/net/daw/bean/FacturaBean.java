@@ -99,7 +99,7 @@ public class FacturaBean {
         strColumns += getObj_usuario().getId() + ",";
         return strColumns;
     }
-    
+   
     public String getPairs(){
 		
 	//Getting the default zone id
