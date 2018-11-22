@@ -107,6 +107,30 @@ public class FacturaDao {
         return res;
     }
 
+    public int getcountspecific(int id) throws Exception {
+        String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_usuario=" + id;
+        int res = 0;
+        ResultSet oResultSet = null;
+        PreparedStatement oPreparedStatement = null;
+        try {
+            oPreparedStatement = oConnection.prepareStatement(strSQL);
+            oResultSet = oPreparedStatement.executeQuery();
+            if (oResultSet.next()) {
+                res = oResultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new Exception("Error en Dao get de " + ob, e);
+        } finally {
+            if (oResultSet != null) {
+                oResultSet.close();
+            }
+            if (oPreparedStatement != null) {
+                oPreparedStatement.close();
+            }
+        }
+        return res;
+    }
+
     public FacturaBean create(FacturaBean oFacturaBean) throws Exception {
 
         Date fechaActual = new Date();
@@ -114,8 +138,8 @@ public class FacturaDao {
         Instant instant = fechaActual.toInstant();
         LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
         String fecha = EncodingHelper.quotate(localDate.toString());
-            
-        String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".fecha,  " + ob + ".iva, " + ob + ".id_usuario) VALUES (NULL,"+fecha+"," + oFacturaBean.getIva() + ","
+
+        String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".fecha,  " + ob + ".iva, " + ob + ".id_usuario) VALUES (NULL," + fecha + "," + oFacturaBean.getIva() + ","
                 + oFacturaBean.getObj_usuario().getId() + ")";
 //                String strSQL = "INSERT INTO " + ob;
 //                strSQL += "(" + oFacturaBean.getColumns() + ")";

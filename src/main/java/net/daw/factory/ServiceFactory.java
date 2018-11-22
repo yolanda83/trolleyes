@@ -102,6 +102,9 @@ public class ServiceFactory {
                     case "getcount":
                         oReplyBean = oFacturaService.getcount();
                         break;
+                    case "getcountspecific":
+                        oReplyBean = oFacturaService.getcountspecific();
+                        break;
                     case "getpage":
                         oReplyBean = oFacturaService.getpage();
                         break;
