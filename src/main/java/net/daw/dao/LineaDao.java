@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import net.daw.bean.LineaBean;
 import net.daw.bean.TipousuarioBean;
 
@@ -28,7 +29,7 @@ public class LineaDao {
         this.ob = ob;
     }
 
-    public LineaBean get(int id) throws Exception {
+    public LineaBean get(int id, Integer expandProducto,Integer expandFactura) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
         LineaBean oLineaBean;
         ResultSet oResultSet = null;
@@ -39,10 +40,12 @@ public class LineaDao {
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
                 oLineaBean = new LineaBean();
-                oLineaBean.setId(oResultSet.getInt("id"));
-                oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
-                oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
-                oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
+                oLineaBean.fill(oResultSet, oConnection, expandProducto, expandFactura);
+//                oLineaBean = new LineaBean();
+//                oLineaBean.setId(oResultSet.getInt("id"));
+//                oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
+//                oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
+//                oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
             } else {
                 oLineaBean = null;
             }
@@ -101,7 +104,7 @@ public class LineaDao {
         return res;
     }
 
-    //cuenta las lineas específicas de una factura
+    //cuenta las lineas especificas de una factura
     public int getcountspecific(int id) throws Exception {
         String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_factura = " + id;
         int res = 0;
@@ -178,7 +181,7 @@ public class LineaDao {
         return iResult;
     }
 
-    public ArrayList<LineaBean> getpage(int iRpp, int iPage, int id) throws Exception {
+    public ArrayList<LineaBean> getpage(int iRpp, int iPage, int id, HashMap<String, String>hmOrder, Integer expandProducto,Integer expandFactura) throws Exception {
         String strSQL = "SELECT * FROM " + ob;
         ArrayList<LineaBean> alLineaBean;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
@@ -193,10 +196,11 @@ public class LineaDao {
                 alLineaBean = new ArrayList<LineaBean>();
                 while (oResultSet.next()) {
                     LineaBean oLineaBean = new LineaBean();
-                    oLineaBean.setId(oResultSet.getInt("id"));
-                    oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
-                    oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
-                    oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
+                    oLineaBean.fill(oResultSet, oConnection, expandProducto, expandFactura);
+//                    oLineaBean.setId(oResultSet.getInt("id"));
+//                    oLineaBean.setCantidad(oResultSet.getInt("cantidad"));
+//                    oLineaBean.setId_producto(oResultSet.getInt("id_producto"));
+//                    oLineaBean.setId_factura(oResultSet.getInt("id_factura"));
                     alLineaBean.add(oLineaBean);
                 }
             } catch (SQLException e) {
