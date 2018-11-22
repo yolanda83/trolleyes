@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.google.gson.annotations.Expose;
+import net.daw.dao.FacturaDao;
 
 import net.daw.dao.TipousuarioDao;
 
@@ -19,112 +20,124 @@ import net.daw.dao.TipousuarioDao;
  */
 public class UsuarioBean {
 
-	@Expose
-	private int id;
-	@Expose
-	private String dni;
-	@Expose
-	private String nombre;
-	@Expose
-	private String ape1;
-	@Expose
-	private String ape2;
-	@Expose
-	private String login;
-	@Expose(serialize = false)
-	private String pass;
-	@Expose(serialize = false)
-	private int id_tipoUsuario;
-	@Expose(deserialize = false)
-	private TipousuarioBean obj_tipoUsuario;
+    @Expose
+    private int id;
+    @Expose
+    private String dni;
+    @Expose
+    private String nombre;
+    @Expose
+    private String ape1;
+    @Expose
+    private String ape2;
+    @Expose
+    private String login;
+    @Expose(serialize = false)
+    private String pass;
+    @Expose(serialize = false)
+    private int id_tipoUsuario;
+    @Expose(deserialize = false)
+    private TipousuarioBean obj_tipoUsuario;
+    @Expose(deserialize = false)
+    private int numFacturas;
 
-	public int getId() {
-		return id;
-	}
+    public int getNumFacturas() {
+        return numFacturas;
+    }
 
-	public TipousuarioBean getObj_tipoUsuario() {
-		return obj_tipoUsuario;
-	}
+    public void setNumFacturas(int numFacturas) {
+        this.numFacturas = numFacturas;
+    }
 
-	public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
-		this.obj_tipoUsuario = obj_tipoUsuario;
-	}
+    public int getId() {
+        return id;
+    }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    public TipousuarioBean getObj_tipoUsuario() {
+        return obj_tipoUsuario;
+    }
 
-	public String getDni() {
-		return dni;
-	}
+    public void setObj_tipoUsuario(TipousuarioBean obj_tipoUsuario) {
+        this.obj_tipoUsuario = obj_tipoUsuario;
+    }
 
-	public void setDni(String dni) {
-		this.dni = dni;
-	}
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getNombre() {
-		return nombre;
-	}
+    public String getDni() {
+        return dni;
+    }
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
 
-	public String getApe1() {
-		return ape1;
-	}
+    public String getNombre() {
+        return nombre;
+    }
 
-	public void setApe1(String ape1) {
-		this.ape1 = ape1;
-	}
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-	public String getApe2() {
-		return ape2;
-	}
+    public String getApe1() {
+        return ape1;
+    }
 
-	public void setApe2(String ape2) {
-		this.ape2 = ape2;
-	}
+    public void setApe1(String ape1) {
+        this.ape1 = ape1;
+    }
 
-	public String getLogin() {
-		return login;
-	}
+    public String getApe2() {
+        return ape2;
+    }
 
-	public void setLogin(String login) {
-		this.login = login;
-	}
+    public void setApe2(String ape2) {
+        this.ape2 = ape2;
+    }
 
-	public String getPass() {
-		return pass;
-	}
+    public String getLogin() {
+        return login;
+    }
 
-	public void setPass(String pass) {
-		this.pass = pass;
-	}
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
-	public int getId_tipoUsuario() {
-		return id_tipoUsuario;
-	}
+    public String getPass() {
+        return pass;
+    }
 
-	public void setId_tipoUsuario(int id_tipoUsuario) {
-		this.id_tipoUsuario = id_tipoUsuario;
-	}
+    public void setPass(String pass) {
+        this.pass = pass;
+    }
 
-	public UsuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
-		this.setId(oResultSet.getInt("id"));
-		this.setDni(oResultSet.getString("dni"));
-		this.setNombre(oResultSet.getString("nombre"));
-		this.setApe1(oResultSet.getString("ape1"));
-		this.setApe2(oResultSet.getString("ape2"));
-		this.setLogin(oResultSet.getString("login"));
-		this.setPass(oResultSet.getString("pass"));
-		if (expand > 0) {
-			TipousuarioDao otipousuarioDao = new TipousuarioDao(oConnection, "tipousuario");
-			this.setObj_tipoUsuario(otipousuarioDao.get(oResultSet.getInt("id_tipoUsuario"), expand - 1));
-		} else {
-			this.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
-		}
-		return this;
-	}
+    public int getId_tipoUsuario() {
+        return id_tipoUsuario;
+    }
+
+    public void setId_tipoUsuario(int id_tipoUsuario) {
+        this.id_tipoUsuario = id_tipoUsuario;
+    }
+
+    public UsuarioBean fill(ResultSet oResultSet, Connection oConnection, Integer expand) throws Exception {
+        this.setId(oResultSet.getInt("id"));
+        this.setDni(oResultSet.getString("dni"));
+        this.setNombre(oResultSet.getString("nombre"));
+        this.setApe1(oResultSet.getString("ape1"));
+        this.setApe2(oResultSet.getString("ape2"));
+        this.setLogin(oResultSet.getString("login"));
+        this.setPass(oResultSet.getString("pass"));
+        FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
+        this.setNumFacturas(oFacturaDao.getcountspecific(this.getId()));
+        if (expand > 0) {
+            TipousuarioDao otipousuarioDao = new TipousuarioDao(oConnection, "tipousuario");
+            this.setObj_tipoUsuario(otipousuarioDao.get(oResultSet.getInt("id_tipoUsuario"), expand - 1));
+        } else {
+            this.setId_tipoUsuario(oResultSet.getInt("id_tipoUsuario"));
+        }
+        return this;
+    }
 
 }
