@@ -21,8 +21,6 @@ public class LineaBean {
     private ProductoBean obj_producto;
     private FacturaBean obj_factura;
 
-    
-    
     public ProductoBean getObj_producto() {
         return obj_producto;
     }
@@ -77,10 +75,14 @@ public class LineaBean {
         if (expandProducto > 0) {
             ProductoDao oProductoDao = new ProductoDao(oConnection, "producto");
             this.setObj_producto(oProductoDao.get(oResultSet.getInt("id_producto"), expandProducto));
+        } else {
+            this.setId_producto(oResultSet.getInt("id_producto"));
         }
         if (expandFactura > 0) {
             FacturaDao oFacturaDao = new FacturaDao(oConnection, "factura");
             this.setObj_factura(oFacturaDao.get(oResultSet.getInt("id_factura"), expandFactura));
+        } else {
+            this.setId_factura(oResultSet.getInt("id_factura"));
         }
 
         return this;

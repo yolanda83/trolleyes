@@ -164,13 +164,19 @@ public class FacturaService {
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
         try {
+            Integer id = 0;
             Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
             Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
             HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
+
+            if (oRequest.getParameter("id") != null) {
+                id = Integer.parseInt(oRequest.getParameter("id"));
+            }
+            
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-            ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage, hmOrder, 1);
+            ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage, id, hmOrder, 1);
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
         } catch (Exception ex) {

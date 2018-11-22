@@ -153,8 +153,7 @@ public class LineaService {
             oConnection = oConnectionPool.newConnection();
             LineaDao oLineaDao = new LineaDao(oConnection, ob);
             iRes = oLineaDao.update(oLineaBean);
-            oReplyBean.setStatus(200);
-            oReplyBean.setJson(Integer.toString(iRes));
+            oReplyBean = new ReplyBean(200, oGson.toJson(iRes));
         } catch (Exception ex) {
             throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
         } finally {

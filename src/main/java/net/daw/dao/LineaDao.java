@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import net.daw.bean.LineaBean;
 import net.daw.bean.TipousuarioBean;
+import net.daw.helper.SqlBuilder;
 
 /**
  *
@@ -29,7 +30,7 @@ public class LineaDao {
         this.ob = ob;
     }
 
-    public LineaBean get(int id, Integer expandProducto,Integer expandFactura) throws Exception {
+    public LineaBean get(int id, Integer expandProducto, Integer expandFactura) throws Exception {
         String strSQL = "SELECT * FROM " + ob + " WHERE id=?";
         LineaBean oLineaBean;
         ResultSet oResultSet = null;
@@ -181,11 +182,12 @@ public class LineaDao {
         return iResult;
     }
 
-    public ArrayList<LineaBean> getpage(int iRpp, int iPage, int id, HashMap<String, String>hmOrder, Integer expandProducto,Integer expandFactura) throws Exception {
+    public ArrayList<LineaBean> getpage(int iRpp, int iPage, int id, HashMap<String, String> hmOrder, Integer expandProducto, Integer expandFactura) throws Exception {
         String strSQL = "SELECT * FROM " + ob;
+        strSQL += " WHERE id_factura = ?";
+        strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<LineaBean> alLineaBean;
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
-            strSQL += " WHERE id_factura = ?";
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
             ResultSet oResultSet = null;
             PreparedStatement oPreparedStatement = null;

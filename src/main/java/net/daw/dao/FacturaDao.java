@@ -190,16 +190,25 @@ public class FacturaDao {
         return iResult;
     }
 
-    public ArrayList<FacturaBean> getpage(int iRpp, int iPage, HashMap<String, String> hmOrder, Integer expand) throws Exception {
+    public ArrayList<FacturaBean> getpage(int iRpp, int iPage, int id, HashMap<String, String> hmOrder, Integer expand) throws Exception {
         String strSQL = "SELECT * FROM " + ob;
+        if (id != 0) {
+            strSQL += " WHERE id_usuario = ?";
+        }
         strSQL += SqlBuilder.buildSqlOrder(hmOrder);
         ArrayList<FacturaBean> alFacturaBean;
+
         if (iRpp > 0 && iRpp < 100000 && iPage > 0 && iPage < 100000000) {
             strSQL += " LIMIT " + (iPage - 1) * iRpp + ", " + iRpp;
             ResultSet oResultSet = null;
             PreparedStatement oPreparedStatement = null;
             try {
                 oPreparedStatement = oConnection.prepareStatement(strSQL);
+
+                if (id != 0) {
+                    oPreparedStatement.setInt(1, id);
+                }
+
                 oResultSet = oPreparedStatement.executeQuery();
                 alFacturaBean = new ArrayList<FacturaBean>();
                 while (oResultSet.next()) {
@@ -223,4 +232,5 @@ public class FacturaDao {
         return alFacturaBean;
 
     }
+
 }
