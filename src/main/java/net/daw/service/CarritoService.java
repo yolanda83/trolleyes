@@ -198,7 +198,7 @@ public class CarritoService implements Serializable{
                     throw new Exception("Existencias de sesion mayor que existencias almacen");
                 }
 
-                //Añado los datos a la nueva linea y la guardo en el arrayList
+                //Anado los datos a la nueva linea y la guardo en el arrayList
                 oNewLinea.setCantidad(o.getCantidad());
                 oNewLinea.setObj_producto(o.getObj_producto());
                 oNewLinea.setObj_factura(bFacturaBean);
