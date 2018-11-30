@@ -133,18 +133,12 @@ public class FacturaDao {
 
     public FacturaBean create(FacturaBean oFacturaBean) throws Exception {
 
-        Date fechaActual = new Date();
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        Instant instant = fechaActual.toInstant();
-        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
-        String fecha = EncodingHelper.quotate(localDate.toString());
-
-        String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".fecha,  " + ob + ".iva, " + ob + ".id_usuario) VALUES (NULL," + fecha + "," + oFacturaBean.getIva() + ","
-                + oFacturaBean.getObj_usuario().getId() + ")";
-//                String strSQL = "INSERT INTO " + ob;
-//                strSQL += "(" + oFacturaBean.getColumns() + ")";
-//                strSQL += " VALUES ";
-//                strSQL += "(" + oFacturaBean.getPairsCreate() + ")";
+//        String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".fecha,  " + ob + ".iva, " + ob + ".id_usuario) VALUES (NULL," + fecha + "," + oFacturaBean.getIva() + ","
+//                + oFacturaBean.getObj_usuario().getId() + ")";
+                String strSQL = "INSERT INTO " + ob;
+                strSQL += "(" + oFacturaBean.getColumns() + ")";
+                strSQL += " VALUES ";
+                strSQL += "(" + oFacturaBean.getValues() + ")";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {

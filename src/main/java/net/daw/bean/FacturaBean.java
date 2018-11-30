@@ -27,6 +27,16 @@ public class FacturaBean {
     private double iva;
     private UsuarioBean obj_usuario;
     private int numLineas;
+    private int id_usuario;
+    
+
+    public int getId_usuario() {
+        return id_usuario;
+    }
+
+    public void setId_usuario(int id_usuario) {
+        this.id_usuario = id_usuario;
+    }
 
     public int getNumLineas() {
         return numLineas;
@@ -91,15 +101,33 @@ public class FacturaBean {
         return strColumns;
     }
 
-    public String getValues() {
+//    public String getValues() {
+//        String strColumns = "";
+//        strColumns += "null,";
+//        strColumns += fecha + ",";
+//        strColumns += iva + ",";
+//        strColumns += getObj_usuario().getId() + ",";
+//        return strColumns;
+//    }
+
+        public String getValues() {
+        //Getting the default zone id
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+
+        //Converting the date to Instant
+        Instant instant = fecha.toInstant();
+
+        //Converting the Date to LocalDate
+        LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
+//        System.out.println("Local Date is: " + localDate);
         String strColumns = "";
         strColumns += "null,";
-        strColumns += fecha + ",";
+        strColumns += EncodingHelper.quotate(localDate.toString()) + ",";
         strColumns += iva + ",";
-        strColumns += getObj_usuario().getId() + ",";
+        strColumns += getObj_usuario().getId();
         return strColumns;
     }
-
+    
     public String getPairs() {
 
         //Getting the default zone id
@@ -113,10 +141,9 @@ public class FacturaBean {
             Date fechaActual = new Date();
             instant = fechaActual.toInstant();
         }
-
         //Converting the Date to LocalDate
         LocalDate localDate = instant.atZone(defaultZoneId).toLocalDate();
-        System.out.println("Local Date is: " + localDate);
+//        System.out.println("Local Date is: " + localDate);
 
         String strPairs = "";
         strPairs += "id=" + id + ",";
