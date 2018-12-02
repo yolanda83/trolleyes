@@ -20,13 +20,18 @@ public class ServiceFactory {
         String op = oRequest.getParameter("op");
         ReplyBean oReplyBean = null;
 
-        
-           switch (ob) {
+        switch (ob) {
             case "carrito":
                 CarritoService oCarritoService = new CarritoService(oRequest);
                 switch (op) {
                     case "add":
                         oReplyBean = oCarritoService.add();
+                        break;
+                    case "reduce":
+                        oReplyBean = oCarritoService.reduce();
+                        break;
+                    case "remove":
+                        oReplyBean = oCarritoService.remove();
                         break;
                     case "empty":
                         oReplyBean = oCarritoService.empty();
@@ -34,14 +39,8 @@ public class ServiceFactory {
                     case "show":
                         oReplyBean = oCarritoService.show();
                         break;
-                    case "reduce":
-                        oReplyBean = oCarritoService.reduce();
-                        break;
                     case "buy":
                         oReplyBean = oCarritoService.buy();
-                        break;
-                    case "showSessionAll":
-                        oReplyBean = oCarritoService.showSessionAll();
                         break;
                     default:
                         oReplyBean = new ReplyBean(500, "Operation doesn't exist");
