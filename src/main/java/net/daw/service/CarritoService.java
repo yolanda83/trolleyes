@@ -95,10 +95,10 @@ public class CarritoService implements Serializable {
                             oReplyBean = new ReplyBean(400, "Ese producto no existe.");
                         }
                     } else {
-                        oReplyBean = new ReplyBean(400, "La cantidad tiene que ser un número mayor a 0.");
+                        oReplyBean = new ReplyBean(400, "La cantidad tiene que ser un numero mayor a 0.");
                     }
                 } else {
-                    oReplyBean = new ReplyBean(400, "El id tiene que ser un número mayor a 0.");
+                    oReplyBean = new ReplyBean(400, "El id tiene que ser un numero mayor a 0.");
                 }
             } catch (Exception ex) {
                 throw new Exception("ERROR: Service level: add method: " + ob + " object: " + ex);
@@ -198,7 +198,7 @@ public class CarritoService implements Serializable {
                         oReplyBean = new ReplyBean(400, "El carrito esta vacio.");
                     }
                 } else {
-                    oReplyBean = new ReplyBean(400, "El id tiene que ser un número mayor a 0.");
+                    oReplyBean = new ReplyBean(400, "El id tiene que ser un numero mayor a 0.");
                 }
             } catch (Exception ex) {
                 throw new Exception("ERROR: Service level: remove method: " + ob + " object: " + ex);
