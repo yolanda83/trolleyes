@@ -137,7 +137,8 @@ public class LineaDao {
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
             oPreparedStatement.setInt(1, oLineaBean.getCantidad());
-            oPreparedStatement.setInt(2, oLineaBean.getObj_producto().getId());
+//            oPreparedStatement.setInt(2, oLineaBean.getObj_producto().getId());
+            oPreparedStatement.setInt(2, oLineaBean.getId_producto());
             oPreparedStatement.setInt(3, oLineaBean.getId_factura());
             oPreparedStatement.executeUpdate();
             oResultSet = oPreparedStatement.getGeneratedKeys();

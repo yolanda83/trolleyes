@@ -124,7 +124,8 @@ public class FacturaBean {
         strColumns += "null,";
         strColumns += EncodingHelper.quotate(localDate.toString()) + ",";
         strColumns += iva + ",";
-        strColumns += getObj_usuario().getId();
+//        strColumns += getObj_usuario().getId();
+        strColumns += id_usuario;
         return strColumns;
     }
     
@@ -150,6 +151,7 @@ public class FacturaBean {
         strPairs += "fecha=" + EncodingHelper.quotate(localDate.toString()) + ",";
         strPairs += "iva=" + iva + ",";
         strPairs += "id_usuario=" + obj_usuario.getId();
+//        strPairs += "id_usuario=" + id_usuario;
         strPairs += " WHERE id=" + id;
         return strPairs;
     }

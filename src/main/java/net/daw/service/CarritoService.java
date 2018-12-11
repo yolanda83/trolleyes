@@ -197,7 +197,7 @@ public class CarritoService implements Serializable {
                     } else {
                         oReplyBean = new ReplyBean(400, "El carrito esta vacio.");
                     }
-                } else{
+                } else {
                     oReplyBean = new ReplyBean(400, "El id tiene que ser un numero mayor a 0.");
                 }
             } catch (Exception ex) {
@@ -277,6 +277,7 @@ public class CarritoService implements Serializable {
                     if (cantidadCorrecta) {
                         oConnection.commit();
                         Gson oGson = new Gson();
+                        oRequest.getSession().setAttribute("carrito", null);
                         oReplyBean = new ReplyBean(200, oGson.toJson(oRequest.getSession().getAttribute("carrito")));
                     } else {
                         oConnection.rollback();
