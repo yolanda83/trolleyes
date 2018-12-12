@@ -194,6 +194,9 @@ public class ServiceFactory {
                     case "loaddata":
                         oReplyBean = oProductoService.loaddata();
                         break;
+                    case "addimage":
+                        oReplyBean = oProductoService.addimage();
+                        break;
                     default:
                         oReplyBean = new ReplyBean(500, "Operation doesn't exist");
                         break;
