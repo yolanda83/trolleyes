@@ -7,24 +7,11 @@ package net.daw.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.io.BufferedInputStream;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 import javax.servlet.http.HttpServletRequest;
-import net.daw.bean.ProductoBean;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.UsuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
@@ -34,11 +21,10 @@ import net.daw.factory.ConnectionFactory;
 import net.daw.helper.EncodingHelper;
 import net.daw.helper.ParameterCook;
 
-import org.apache.commons.io.IOUtils;
 
 /**
  *
- * @author Ram�n
+ * @author Ramon
  */
 public class UsuarioService {
 
@@ -292,6 +278,9 @@ public class UsuarioService {
             //throw new Exception("ERROR Bad Authentication: Service level: get page: " + ob + " object");
             oReplyBean = new ReplyBean(401, "Bad Authentication");
         }
+
+        oConnectionPool.disposeConnection();
+
         return oReplyBean;
     }
 
@@ -331,6 +320,9 @@ public class UsuarioService {
                 oReplyBean = new ReplyBean(200, oGson.toJson("Pass updated"));
             } catch (Exception e) {
                 oReplyBean = new ReplyBean(500, e.getMessage());
+
+            } finally {
+                oConnectionPool.disposeConnection();
             }
 
         }
