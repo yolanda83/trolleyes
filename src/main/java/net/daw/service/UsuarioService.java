@@ -313,7 +313,7 @@ public class UsuarioService {
         return oReplyBean;
     }
 
-        public ReplyBean updatePass() throws Exception {
+    public ReplyBean updatePass() throws Exception {
         Gson oGson = new Gson();
         ReplyBean oReplyBean = null;
         ConnectionInterface oConnectionPool = null;
@@ -328,13 +328,13 @@ public class UsuarioService {
                 oConnection = oConnectionPool.newConnection();
                 UsuarioDao oUsuarioDao = new UsuarioDao(oConnection, "usuario");
                 oUsuarioDao.updatePass(lastPass, newPass, oUsuarioBeanSession);
+                oReplyBean = new ReplyBean(200, oGson.toJson("Pass updated"));
             } catch (Exception e) {
                 oReplyBean = new ReplyBean(500, e.getMessage());
             }
-        } else {
-            oReplyBean = new ReplyBean(200, oGson.toJson("Pass updated"));
+
         }
         return oReplyBean;
     }
-    
+
 }
