@@ -7,7 +7,6 @@ import net.daw.service.CarritoService;
 import net.daw.service.FacturaService;
 import net.daw.service.LineaService;
 import net.daw.service.ProductoService;
-import net.daw.service.RellenarService;
 import net.daw.service.TipoproductoService;
 import net.daw.service.TipousuarioService;
 import net.daw.service.UsuarioService;
@@ -106,12 +105,12 @@ public class ServiceFactory {
                     case "check":
                         oReplyBean = oUsuarioService.check();
                         break;
-                        case "updatepass":
+                    case "updatepass":
                         oReplyBean = oUsuarioService.updatePass();
                         break;
                     default:
                         oReplyBean = new ReplyBean(500, "Operation doesn't exist");
-                        break;                       
+                        break;
                 }
                 break;
             case "factura":

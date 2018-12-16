@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import javax.servlet.http.HttpServletRequest;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.ProductoBean;
+import net.daw.bean.UsuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
 import net.daw.dao.ProductoDao;
@@ -31,6 +32,25 @@ public class ProductoService {
         super();
         this.oRequest = oRequest;
         ob = oRequest.getParameter("ob");
+    }
+
+    protected Boolean checkPermission(String strMethodName) {
+        UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
+        switch (strMethodName) {
+            case "remove":
+            case "update":
+            case "create":
+            case "fill":
+            case "load":
+            case "add":
+                if (oUsuarioBean.getId_tipoUsuario() != 1) {
+                    oUsuarioBean = null;
+                }
+                break;
+        }
+
+        return oUsuarioBean != null;
+
     }
 
     public ReplyBean get() throws Exception {
@@ -57,19 +77,23 @@ public class ProductoService {
 
     public ReplyBean remove() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            Integer id = Integer.parseInt(oRequest.getParameter("id"));
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            int iRes = oProductoDao.remove(id);
-            oReplyBean = new ReplyBean(200, Integer.toString(iRes));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        if (checkPermission("remove")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                Integer id = Integer.parseInt(oRequest.getParameter("id"));
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
+                int iRes = oProductoDao.remove(id);
+                oReplyBean = new ReplyBean(200, Integer.toString(iRes));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
 
@@ -98,54 +122,62 @@ public class ProductoService {
 
     public ReplyBean create() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            String strJsonFromClient = oRequest.getParameter("json");
-            Gson oGson = new Gson();
-            ProductoBean oProductoBean = new ProductoBean();
-            oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            oProductoBean = oProductoDao.create(oProductoBean);
-            oReplyBean = new ReplyBean(200, oGson.toJson(oProductoBean));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        if (checkPermission("create")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                String strJsonFromClient = oRequest.getParameter("json");
+                Gson oGson = new Gson();
+                ProductoBean oProductoBean = new ProductoBean();
+                oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
+                oProductoBean = oProductoDao.create(oProductoBean);
+                oReplyBean = new ReplyBean(200, oGson.toJson(oProductoBean));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
     }
 
     public ReplyBean fill() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        ArrayList<ProductoBean> alProductoBean = new ArrayList<ProductoBean>();
+        if (checkPermission("fill")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            ArrayList<ProductoBean> alProductoBean = new ArrayList<ProductoBean>();
 
-        try {
-            alProductoBean = obtenerDatos();
+            try {
+                alProductoBean = obtenerDatos();
 
-            //String strJsonFromClient = oRequest.getParameter("json");
-            Gson oGson = new Gson();
-            ProductoBean oProductoBean = new ProductoBean();
-            //oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
+                //String strJsonFromClient = oRequest.getParameter("json");
+                Gson oGson = new Gson();
+                ProductoBean oProductoBean = new ProductoBean();
+                //oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
 
-            for (ProductoBean productos : alProductoBean) {
-                oProductoBean = oProductoDao.create(productos);
-            }
+                for (ProductoBean productos : alProductoBean) {
+                    oProductoBean = oProductoDao.create(productos);
+                }
 //            oProductoBean = oProductoDao.create(oProductoBean);
 //            oReplyBean = new ReplyBean(200, oGson.toJson(oProductoBean));
-            oReplyBean = new ReplyBean(200, oGson.toJson("Productos creados correctamente"));
-        } catch (Exception ex) {
-            oReplyBean = new ReplyBean(500,
-                    "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
-        } finally {
-            oConnectionPool.disposeConnection();
+                oReplyBean = new ReplyBean(200, oGson.toJson("Productos creados correctamente"));
+            } catch (Exception ex) {
+                oReplyBean = new ReplyBean(500,
+                        "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
     }
@@ -187,22 +219,26 @@ public class ProductoService {
     public ReplyBean update() throws Exception {
         int iRes = 0;
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            String strJsonFromClient = oRequest.getParameter("json");
-            Gson oGson = new Gson();
-            ProductoBean oProductoBean = new ProductoBean();
-            oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            iRes = oProductoDao.update(oProductoBean);
-            oReplyBean = new ReplyBean(200, oGson.toJson(iRes));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        if (checkPermission("update")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                String strJsonFromClient = oRequest.getParameter("json");
+                Gson oGson = new Gson();
+                ProductoBean oProductoBean = new ProductoBean();
+                oProductoBean = oGson.fromJson(strJsonFromClient, ProductoBean.class);
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
+                iRes = oProductoDao.update(oProductoBean);
+                oReplyBean = new ReplyBean(200, oGson.toJson(iRes));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
     }
@@ -233,28 +269,31 @@ public class ProductoService {
 
     public ReplyBean loaddata() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        ArrayList<ProductoBean> productos = new ArrayList<>();
-        RellenarService oRellenarService = new RellenarService();
-        try {
-            Integer number = Integer.parseInt(oRequest.getParameter("number"));
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-            productos = oRellenarService.RellenarProducto(number);
-            for (ProductoBean producto : productos) {
-                oProductoDao.create(producto);
+        if (checkPermission("load")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            ArrayList<ProductoBean> productos = new ArrayList<>();
+            RellenarService oRellenarService = new RellenarService();
+            try {
+                Integer number = Integer.parseInt(oRequest.getParameter("number"));
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
+                productos = oRellenarService.RellenarProducto(number);
+                for (ProductoBean producto : productos) {
+                    oProductoDao.create(producto);
+                }
+                Gson oGson = new Gson();
+                oReplyBean = new ReplyBean(200, oGson.toJson("Productos creados: " + number));
+            } catch (Exception ex) {
+                oReplyBean = new ReplyBean(500,
+                        "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+            } finally {
+                oConnectionPool.disposeConnection();
             }
-            Gson oGson = new Gson();
-            oReplyBean = new ReplyBean(200, oGson.toJson("Productos creados: " + number));
-        } catch (Exception ex) {
-            oReplyBean = new ReplyBean(500,
-                    "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
-        } finally {
-            oConnectionPool.disposeConnection();
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
-        
         return oReplyBean;
     }
 
@@ -262,29 +301,33 @@ public class ProductoService {
 
         String name = "";
         ReplyBean oReplyBean;
-        Gson oGson = new Gson();
+        if (checkPermission("add")) {
+            Gson oGson = new Gson();
 
-        HashMap<String, String> hash = new HashMap<>();
+            HashMap<String, String> hash = new HashMap<>();
 
-        if (ServletFileUpload.isMultipartContent(oRequest)) {
-            try {
-                List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(oRequest);
-                for (FileItem item : multiparts) {
-                    if (!item.isFormField()) {
-                        name = new File(item.getName()).getName();
-                        item.write(new File(".//..//webapps//ROOT//imagenes//" + name));
-                    } else {
-                        hash.put(item.getFieldName(), item.getString());
+            if (ServletFileUpload.isMultipartContent(oRequest)) {
+                try {
+                    List<FileItem> multiparts = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(oRequest);
+                    for (FileItem item : multiparts) {
+                        if (!item.isFormField()) {
+                            name = new File(item.getName()).getName();
+                            item.write(new File(".//..//webapps//ROOT//imagenes//" + name));
+                        } else {
+                            hash.put(item.getFieldName(), item.getString());
+                        }
                     }
+                    oReplyBean = new ReplyBean(200, oGson.toJson("File upload: " + name));
+                } catch (Exception ex) {
+                    oReplyBean = new ReplyBean(500, oGson.toJson("Error while uploading file: " + name));
                 }
-                oReplyBean = new ReplyBean(200, oGson.toJson("File upload: " + name));
-            } catch (Exception ex) {
-                oReplyBean = new ReplyBean(500, oGson.toJson("Error while uploading file: " + name));
+            } else {
+                oReplyBean = new ReplyBean(500, oGson.toJson("Can't read image"));
             }
-        } else {
-            oReplyBean = new ReplyBean(500, oGson.toJson("Can't read image"));
-        }
 
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
+        }
         return oReplyBean;
     }
 }

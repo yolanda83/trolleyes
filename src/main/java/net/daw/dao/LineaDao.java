@@ -81,13 +81,15 @@ public class LineaDao {
         return iRes;
     }
 
-    public int getcount() throws Exception {
-        String strSQL = "SELECT COUNT(id) FROM " + ob;
+    public int getcount(int id) throws Exception {
+        String strSQL = "SELECT COUNT(id) FROM " + ob + " WHERE id_factura = ?";
         int res = 0;
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
+            oPreparedStatement.setInt(1, id);
+            
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
                 res = oResultSet.getInt(1);

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.daw.bean.LineaBean;
 import net.daw.bean.ReplyBean;
 import net.daw.bean.TipousuarioBean;
+import net.daw.bean.UsuarioBean;
 import net.daw.connection.publicinterface.ConnectionInterface;
 import net.daw.constant.ConnectionConstants;
 import net.daw.dao.LineaDao;
@@ -30,6 +31,22 @@ public class LineaService {
         super();
         this.oRequest = oRequest;
         ob = oRequest.getParameter("ob");
+    }
+
+    protected Boolean checkPermission(String strMethodName) {
+        UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
+        switch (strMethodName) {
+            case "remove":
+            case "update":
+            case "create":
+                if (oUsuarioBean.getId_tipoUsuario() != 1) {
+                    oUsuarioBean = null;
+                }
+                break;
+        }
+
+        return oUsuarioBean != null;
+
     }
 
     public ReplyBean get() throws Exception {
@@ -56,19 +73,23 @@ public class LineaService {
 
     public ReplyBean remove() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            Integer id = Integer.parseInt(oRequest.getParameter("id"));
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            LineaDao oLineaDao = new LineaDao(oConnection, ob);
-            int iRes = oLineaDao.remove(id);
-            oReplyBean = new ReplyBean(200, Integer.toString(iRes));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        if (checkPermission("remove")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                Integer id = Integer.parseInt(oRequest.getParameter("id"));
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                LineaDao oLineaDao = new LineaDao(oConnection, ob);
+                int iRes = oLineaDao.remove(id);
+                oReplyBean = new ReplyBean(200, Integer.toString(iRes));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: remove method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
 
@@ -79,10 +100,11 @@ public class LineaService {
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
         try {
+            Integer id = Integer.parseInt(oRequest.getParameter("id"));
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             LineaDao oLineaDao = new LineaDao(oConnection, ob);
-            int registros = oLineaDao.getcount();
+            int registros = oLineaDao.getcount(id);
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(registros));
         } catch (Exception ex) {
@@ -119,22 +141,26 @@ public class LineaService {
 
     public ReplyBean create() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            String strJsonFromClient = oRequest.getParameter("json");
-            Gson oGson = new Gson();
-            LineaBean oLineaBean = new LineaBean();
-            oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            LineaDao oLineaDao = new LineaDao(oConnection, ob);
-            oLineaBean = oLineaDao.create(oLineaBean);
-            oReplyBean = new ReplyBean(200, oGson.toJson(oLineaBean));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        if (checkPermission("create")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                String strJsonFromClient = oRequest.getParameter("json");
+                Gson oGson = new Gson();
+                LineaBean oLineaBean = new LineaBean();
+                oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                LineaDao oLineaDao = new LineaDao(oConnection, ob);
+                oLineaBean = oLineaDao.create(oLineaBean);
+                oReplyBean = new ReplyBean(200, oGson.toJson(oLineaBean));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: create method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
     }
@@ -142,22 +168,26 @@ public class LineaService {
     public ReplyBean update() throws Exception {
         int iRes = 0;
         ReplyBean oReplyBean = null;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            String strJsonFromClient = oRequest.getParameter("json");
-            Gson oGson = new Gson();
-            LineaBean oLineaBean = new LineaBean();
-            oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            LineaDao oLineaDao = new LineaDao(oConnection, ob);
-            iRes = oLineaDao.update(oLineaBean);
-            oReplyBean = new ReplyBean(200, oGson.toJson(iRes));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        if (checkPermission("update")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                String strJsonFromClient = oRequest.getParameter("json");
+                Gson oGson = new Gson();
+                LineaBean oLineaBean = new LineaBean();
+                oLineaBean = oGson.fromJson(strJsonFromClient, LineaBean.class);
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                LineaDao oLineaDao = new LineaDao(oConnection, ob);
+                iRes = oLineaDao.update(oLineaBean);
+                oReplyBean = new ReplyBean(200, oGson.toJson(iRes));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: update method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
         return oReplyBean;
     }
