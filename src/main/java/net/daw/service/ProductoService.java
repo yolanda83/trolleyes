@@ -231,28 +231,6 @@ public class ProductoService {
 
     }
 
-//    public ReplyBean getpage() throws Exception {
-//        ReplyBean oReplyBean;
-//        ConnectionInterface oConnectionPool = null;
-//        Connection oConnection;
-//        try {
-//            Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
-//            Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
-//            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-//            oConnection = oConnectionPool.newConnection();
-//            ProductoDao oProductoDao = new ProductoDao(oConnection, ob);
-//            ArrayList<ProductoBean> alProductoBean = oProductoDao.getpage(iRpp, iPage);
-//            Gson oGson = new Gson();
-//            oReplyBean = new ReplyBean(200, oGson.toJson(alProductoBean));
-//        } catch (Exception ex) {
-//            throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
-//        } finally {
-//            oConnectionPool.disposeConnection();
-//        }
-//
-//        return oReplyBean;
-//
-//    }
     public ReplyBean loaddata() throws Exception {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
@@ -273,7 +251,10 @@ public class ProductoService {
         } catch (Exception ex) {
             oReplyBean = new ReplyBean(500,
                     "ERROR: " + EncodingHelper.escapeQuotes(EncodingHelper.escapeLine(ex.getMessage())));
+        } finally {
+            oConnectionPool.disposeConnection();
         }
+        
         return oReplyBean;
     }
 
