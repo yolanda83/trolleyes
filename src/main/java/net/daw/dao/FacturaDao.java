@@ -83,13 +83,23 @@ public class FacturaDao {
         return iRes;
     }
 
-    public int getcount() throws Exception {
+    public int getcount(int id) throws Exception {
         String strSQL = "SELECT COUNT(id) FROM " + ob;
+
+        if (id != 0) {
+            strSQL += " WHERE id_usuario = ?";
+        }
+
         int res = 0;
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {
             oPreparedStatement = oConnection.prepareStatement(strSQL);
+
+            if (id != 0) {
+                oPreparedStatement.setInt(1, id);
+            }
+            
             oResultSet = oPreparedStatement.executeQuery();
             if (oResultSet.next()) {
                 res = oResultSet.getInt(1);
@@ -135,10 +145,10 @@ public class FacturaDao {
 
 //        String strSQL = "INSERT INTO " + ob + " ( " + ob + ".id,  " + ob + ".fecha,  " + ob + ".iva, " + ob + ".id_usuario) VALUES (NULL," + fecha + "," + oFacturaBean.getIva() + ","
 //                + oFacturaBean.getObj_usuario().getId() + ")";
-                String strSQL = "INSERT INTO " + ob;
-                strSQL += "(" + oFacturaBean.getColumns() + ")";
-                strSQL += " VALUES ";
-                strSQL += "(" + oFacturaBean.getValues() + ")";
+        String strSQL = "INSERT INTO " + ob;
+        strSQL += "(" + oFacturaBean.getColumns() + ")";
+        strSQL += " VALUES ";
+        strSQL += "(" + oFacturaBean.getValues() + ")";
         ResultSet oResultSet = null;
         PreparedStatement oPreparedStatement = null;
         try {

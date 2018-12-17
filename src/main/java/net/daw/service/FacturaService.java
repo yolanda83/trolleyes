@@ -32,11 +32,23 @@ public class FacturaService {
 
     protected Boolean checkPermission(String strMethodName) {
         UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
+        Integer id = 0;
         switch (strMethodName) {
             case "remove":
             case "update":
             case "create":
                 if (oUsuarioBean.getId_tipoUsuario() != 1) {
+                    oUsuarioBean = null;
+                }
+                break;
+            case "getpage":
+
+                if (oRequest.getParameter("id") != null) {
+                    id = Integer.parseInt(oRequest.getParameter("id"));
+                    
+                }
+
+                if (id != oUsuarioBean.getId() && oUsuarioBean.getId_tipoUsuario() != 1) {
                     oUsuarioBean = null;
                 }
                 break;
@@ -96,11 +108,16 @@ public class FacturaService {
         ReplyBean oReplyBean;
         ConnectionInterface oConnectionPool = null;
         Connection oConnection;
+        Integer id = 0;
         try {
+            if (oRequest.getParameter("id") != null) {
+                id = Integer.parseInt(oRequest.getParameter("id"));
+            }
+
             oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
             oConnection = oConnectionPool.newConnection();
             FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-            int registros = oFacturaDao.getcount();
+            int registros = oFacturaDao.getcount(id);
             Gson oGson = new Gson();
             oReplyBean = new ReplyBean(200, oGson.toJson(registros));
         } catch (Exception ex) {
@@ -190,30 +207,33 @@ public class FacturaService {
 
     public ReplyBean getpage() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            Integer id = 0;
-            Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
-            Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
-            HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
+        if (checkPermission("getpage")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                Integer id = 0;
+                Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
+                Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+                HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
 
-            if (oRequest.getParameter("id") != null) {
-                id = Integer.parseInt(oRequest.getParameter("id"));
+                if (oRequest.getParameter("id") != null) {
+                    id = Integer.parseInt(oRequest.getParameter("id"));
+                }
+
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
+                ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage, id, hmOrder, 1);
+                Gson oGson = new Gson();
+                oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
             }
-
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            FacturaDao oFacturaDao = new FacturaDao(oConnection, ob);
-            ArrayList<FacturaBean> alFacturaBean = oFacturaDao.getpage(iRpp, iPage, id, hmOrder, 1);
-            Gson oGson = new Gson();
-            oReplyBean = new ReplyBean(200, oGson.toJson(alFacturaBean));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
-
         return oReplyBean;
 
     }

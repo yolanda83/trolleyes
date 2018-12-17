@@ -35,11 +35,23 @@ public class LineaService {
 
     protected Boolean checkPermission(String strMethodName) {
         UsuarioBean oUsuarioBean = (UsuarioBean) oRequest.getSession().getAttribute("user");
+        Integer id = 0;
         switch (strMethodName) {
             case "remove":
             case "update":
             case "create":
                 if (oUsuarioBean.getId_tipoUsuario() != 1) {
+                    oUsuarioBean = null;
+                }
+                break;
+            case "getpage":
+
+                if (oRequest.getParameter("userId") != null) {
+                    id = Integer.parseInt(oRequest.getParameter("userId"));
+
+                }
+
+                if (id != oUsuarioBean.getId() && oUsuarioBean.getId_tipoUsuario() != 1) {
                     oUsuarioBean = null;
                 }
                 break;
@@ -194,25 +206,28 @@ public class LineaService {
 
     public ReplyBean getpage() throws Exception {
         ReplyBean oReplyBean;
-        ConnectionInterface oConnectionPool = null;
-        Connection oConnection;
-        try {
-            Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
-            Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
-            Integer id = Integer.parseInt(oRequest.getParameter("id"));
-            HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
-            oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
-            oConnection = oConnectionPool.newConnection();
-            LineaDao oLineaDao = new LineaDao(oConnection, ob);
-            ArrayList<LineaBean> alLineaBean = oLineaDao.getpage(iRpp, iPage, id, hmOrder, 1, 1);
-            Gson oGson = new Gson();
-            oReplyBean = new ReplyBean(200, oGson.toJson(alLineaBean));
-        } catch (Exception ex) {
-            throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
-        } finally {
-            oConnectionPool.disposeConnection();
+        if (checkPermission("getpage")) {
+            ConnectionInterface oConnectionPool = null;
+            Connection oConnection;
+            try {
+                Integer iRpp = Integer.parseInt(oRequest.getParameter("rpp"));
+                Integer iPage = Integer.parseInt(oRequest.getParameter("page"));
+                Integer id = Integer.parseInt(oRequest.getParameter("id"));
+                HashMap<String, String> hmOrder = ParameterCook.getOrderParams(oRequest.getParameter("order"));
+                oConnectionPool = ConnectionFactory.getConnection(ConnectionConstants.connectionPool);
+                oConnection = oConnectionPool.newConnection();
+                LineaDao oLineaDao = new LineaDao(oConnection, ob);
+                ArrayList<LineaBean> alLineaBean = oLineaDao.getpage(iRpp, iPage, id, hmOrder, 1, 1);
+                Gson oGson = new Gson();
+                oReplyBean = new ReplyBean(200, oGson.toJson(alLineaBean));
+            } catch (Exception ex) {
+                throw new Exception("ERROR: Service level: getpage method: " + ob + " object", ex);
+            } finally {
+                oConnectionPool.disposeConnection();
+            }
+        } else {
+            oReplyBean = new ReplyBean(401, "Unauthorized");
         }
-
         return oReplyBean;
 
     }
